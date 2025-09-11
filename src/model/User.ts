@@ -46,7 +46,7 @@ const userSchema: Schema<User> = new Schema({
     },
     isAcceptingMessages: {
         type: Boolean,
-        default: false,
+        default: true,
     },
     messages: [{
         type: mongoose.Schema.Types.ObjectId,
