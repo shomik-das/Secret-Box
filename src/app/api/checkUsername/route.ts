@@ -26,7 +26,7 @@ export async function GET(request: Request) {
                 message: usernameError
             }), {status: 400});
         }
-        const user = await User.findOne({username, isVerifying: true});
+        const user = await User.findOne({username, isVerify: true});
         if(user){
             return new Response(JSON.stringify({
                 success: false,

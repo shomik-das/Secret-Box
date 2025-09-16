@@ -7,7 +7,7 @@ export interface User extends Document {
     password: string;
     verifyCode: string;
     verifyCodeExpiry: Date;
-    isVerifying: boolean;
+    isVerify: boolean;
     isAcceptingMessages: boolean;
     messages: mongoose.Types.ObjectId[];
     createdAt: Date;
@@ -40,7 +40,7 @@ const userSchema: Schema<User> = new Schema({
         type: Date,
         required: [true, 'Verify code expiry is required'],
     },
-    isVerifying: {
+    isVerify: {
         type: Boolean,
         default: false,
     },

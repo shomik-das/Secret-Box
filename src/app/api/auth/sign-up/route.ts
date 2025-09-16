@@ -25,7 +25,7 @@ export const POST = async (request: Request) => {
         // If email already exists, check if user is verifying or not
         if(existingEmail){
             // If user is already verifying, do not allow to sign up again with same email
-            if(existingEmail.isVerifying){
+            if(existingEmail.isVerify){
                 return Response.json({
                     success: false,
                     message: 'User already exists with this email',

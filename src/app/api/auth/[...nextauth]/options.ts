@@ -27,7 +27,7 @@ export const options: NextAuthOptions = {
                     if(!user){
                         throw new Error("No user found with the given username or email");
                     }
-                    if(user.isVerifying){
+                    if(user.isVerify){
                         throw new Error("Please verify your email to login");
                     }
                     const isPasswordCorrect = await bcrypt.compare(credentials!.password, user.password);
@@ -48,7 +48,7 @@ export const options: NextAuthOptions = {
                 token._id = user._id?.toString();
                 token.username = user.username;
                 token.email = user.email;
-                token.isVerifying = user.isVerifying;
+                token.isVerify = user.isVerify;
                 token.isAcceptingMessages = user.isAcceptingMessages;
             }
             return token;
@@ -58,7 +58,7 @@ export const options: NextAuthOptions = {
                 session.user._id = token.id as string;
                 session.user.username = token.username as string;
                 session.user.email = token.email as string;
-                session.user.isVerifying = token.isVerifying as boolean;
+                session.user.isVerify = token.isVerify as boolean;
                 session.user.isAcceptingMessages = token.isAcceptingMessages as boolean;
             }
             return session;

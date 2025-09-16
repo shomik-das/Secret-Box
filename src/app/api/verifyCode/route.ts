@@ -40,7 +40,7 @@ export async function POST(request: Request) {
                 message: "Invalid verification code"
             }), {status: 400});
         }
-        user.isVerifying = true;
+        user.isVerify = true;
         user.verifyCode = "";
         user.verifyCodeExpiry = new Date(0);
         await user.save();
