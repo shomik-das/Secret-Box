@@ -24,7 +24,7 @@ export async function POST(request: Request) {
             return new Response(JSON.stringify({
                 success: false,
                 message: "No user found"
-            }), {status: 400});
+            }), {status: 404});
         }
         const isCodeValid = user.verifyCode === code
         const isCodeExpired = new Date(user.verifyCodeExpiry) < new Date();
@@ -51,7 +51,7 @@ export async function POST(request: Request) {
         }), {status: 200});
     }
     catch(err){
-        console.error("Error verifying code:", err);
+        console.error("Error verifying code: ", err);
         return new Response(JSON.stringify({
             success: false,
             message: "Error verifying code"
