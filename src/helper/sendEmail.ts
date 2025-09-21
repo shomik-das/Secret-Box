@@ -1,19 +1,20 @@
-import {resend} from '@/lib/resend';
-import {emailTemplate} from '../../emails/emailTemplate';
+import {Resend} from "resend";
+import { renderAsync } from "@react-email/render";
+import EmailTemplate from '../../emails/EmailTemplate';
 import {apiResponse} from '@/types/apiResponse';
 
-const sendEmail = async (
-    email: string,
-    username: string,
-    otp: string
-): Promise<apiResponse> =>{
+const resend = new Resend(process.env.RESEND_API_KEY);
+
+const sendEmail = async (to: string, username: string, otp: string): Promise<apiResponse> =>{
     try{
-        await resend.emails.send({
+        const html = await renderAsync(EmailTemplate({ username, otp }));``
+        const response = await resend.emails.send({
             from: 'Acme <onboarding@resend.dev>',
-            to: email,
+            to,
             subject: 'Verify your email | Secret Box',
-            react: emailTemplate({ username: username, otp: otp }),
+            html,
         });
+        console.log("Resend response:", response);
         return {
             success: true,
             message: 'Email sent successfully',

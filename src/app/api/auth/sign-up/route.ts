@@ -10,8 +10,7 @@ export const POST = async (request: Request) => {
         const {username, email, password} = await request.json();
         //Check if user with same username already exists
         const existingUsername = await User.findOne({username});
-        // if(existingUsername && existingUsername.isVerify){
-        if(existingUsername){
+        if(existingUsername && existingUsername.isVerify){
             return NextResponse.json({
                 success: false,
                 message: 'Username already exists',

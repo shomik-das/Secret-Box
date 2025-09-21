@@ -5,7 +5,7 @@ interface EmailTemplateProps {
   otp: string;
 }
 
-export function emailTemplate ({ username, otp }: EmailTemplateProps) {
+export default function EmailTemplate ({ username, otp }: EmailTemplateProps) {
   return (
     <div
       style={{
