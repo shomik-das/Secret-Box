@@ -11,6 +11,12 @@ export async function POST(request: Request) {
     try{
         await dbConnection();
         const {username, code} = await request.json();
+        if(!username || !code){
+            return new Response(JSON.stringify({
+                success: false,
+                message: "Username and code are required"
+            }), {status: 400});
+        }
         const result = verifyCodeSchema.safeParse({code: code});
         if(!result.success){
             const codeError = result.error.format().code?._errors || [];
@@ -23,7 +29,7 @@ export async function POST(request: Request) {
         if(!user){
             return new Response(JSON.stringify({
                 success: false,
-                message: "No user found"
+                message: "User not found"
             }), {status: 404});
         }
         const isCodeValid = user.verifyCode === code
@@ -41,20 +47,22 @@ export async function POST(request: Request) {
             }), {status: 400});
         }
         user.isVerify = true;
-        user.verifyCode = "";
+        user.verifyCode = "USED";
         user.verifyCodeExpiry = new Date(0);
-        await user.save();
-
+        const updatedUser = await user.save();
+        if(!updatedUser){
+            console.log("Error in updating user") 
+        }
         return new Response(JSON.stringify({
             success: true,
             message: "Email verified successfully"
         }), {status: 200});
     }
     catch(err){
-        console.error("Error verifying code: ", err);
+        console.error("Error in verify-otp route: ", err);
         return new Response(JSON.stringify({
             success: false,
-            message: "Error verifying code"
+            message: "Error verifying email"
         }), {status: 500});
     }
 }

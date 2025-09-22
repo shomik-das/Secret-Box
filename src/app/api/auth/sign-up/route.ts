@@ -68,14 +68,14 @@ export const POST = async (request: Request) => {
         }
         return NextResponse.json({
             success: true,
-            message: 'User registered successfully please verify your email',
+            message: 'Please verify your email',
         }, {status: 201} );
     }
     catch(err){
-        console.error('Error in signUp route:', err);
+        console.error('Error in sign-up route:', err);
         return NextResponse.json({
             success: false,
-            message: 'Internal Server Error',
+            message: 'Error in sign-up route',
         }, {status: 500} );
     }
 }

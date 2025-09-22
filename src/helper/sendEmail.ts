@@ -14,7 +14,7 @@ const sendEmail = async (to: string, username: string, otp: string): Promise<api
             subject: 'Verify your email | Secret Box',
             html,
         });
-        console.log("Resend response:", response);
+        // console.log("Resend response:", response);
         return {
             success: true,
             message: 'Email sent successfully',
