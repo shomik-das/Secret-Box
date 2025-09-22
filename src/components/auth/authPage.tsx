@@ -71,6 +71,7 @@ export function AuthPage() {
               </div>
             </div>
           )}
+          
           {showVerifyPage ? (
             <VerifyPage usernameProp={username} emailProp={email}  setShowVerifyPageProp={setShowVerifyPage}/>
           ) : isSignin ? (

@@ -1,34 +1,58 @@
 "use client"
 
-import type React from "react"
-
+import { useForm } from "react-hook-form"
+import { z } from "zod"
 import { useState } from "react"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { toast } from "sonner"
+import { signInSchema } from "@/schema/signInSchema"
+import { zodResolver } from "@hookform/resolvers/zod"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
+import { Form, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
+import { Loader2, User, Mail, Lock, ArrowRight } from "lucide-react"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
-import { Eye, EyeOff, Mail, Lock, ArrowRight } from "lucide-react"
+import { signIn } from "next-auth/react"
+import { useRouter } from "next/navigation"
 
 export default function signin() {
-  const [showPassword, setShowPassword] = useState(false)
-  const [formData, setFormData] = useState({
-    email: "",
-    password: "",
+
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const router = useRouter();
+
+  const form = useForm({
+    resolver: zodResolver(signInSchema),
+    defaultValues: {
+      identifier: "",
+      password: "",
+    },
   })
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData((prev) => ({
-      ...prev,
-      [e.target.name]: e.target.value,
-    }))
+  const onSubmit = async (data: z.infer<typeof signInSchema>) => {
+    try{
+      setIsSubmitting(true)
+      const res = await signIn("credentials", {
+        redirect: false,
+        identifier: data.identifier,
+        password: data.password,
+      })
+      if(res?.error){
+        console.error("Error signing in: ", res.error)
+        toast.error(res.error)
+        return
+      }
+      if(res?.ok){
+        router.push("/dashboard")
+      }
+    }
+    catch(err){
+      console.error("Error signing in: ", err)
+      toast.error("Something went wrong")
+    }
+    finally{
+      setIsSubmitting(false)
+    }
   }
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    console.log("Login submitted:", formData)
-  }
-
   return (
     <Card className="border-0 shadow-2xl">
       <CardHeader className="space-y-2 pb-6">
@@ -39,66 +63,60 @@ export default function signin() {
       </CardHeader>
 
       <CardContent className="space-y-4">
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="space-y-2">
-            <Label htmlFor="email">Email</Label>
-            <div className="relative">
-              <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-              <Input
-                id="email"
-                name="email"
-                type="email"
-                placeholder="Enter your email"
-                value={formData.email}
-                onChange={handleInputChange}
-                className="pl-10"
-                required
-              />
-            </div>
-          </div>
-
-          <div className="space-y-2">
-            <Label htmlFor="password">Password</Label>
-            <div className="relative">
-              <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-              <Input
-                id="password"
-                name="password"
-                type={showPassword ? "text" : "password"}
-                placeholder="Enter your password"
-                value={formData.password}
-                onChange={handleInputChange}
-                className="pl-10 pr-10"
-                required
-              />
-              <Button
-                type="button"
-                variant="ghost"
-                size="sm"
-                className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
-                onClick={() => setShowPassword(!showPassword)}
-              >
-                {showPassword ? (
-                  <EyeOff className="h-4 w-4 text-muted-foreground" />
-                ) : (
-                  <Eye className="h-4 w-4 text-muted-foreground" />
-                )}
-              </Button>
-            </div>
-          </div>
-
-          <div className="flex items-center justify-end">
-            <Button variant="link" className="px-0 text-sm text-muted-foreground hover:text-primary">
-              Forgot password?
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+            <FormField
+              name="identifier"
+              control={form.control}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Username or Email</FormLabel>
+                  <div className="relative">
+                    <User className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                    <Input
+                      {...field}
+                      className="pl-10"
+                      placeholder="Enter your username or email"
+                    />
+                  </div>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              name="password"
+              control={form.control}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Password</FormLabel>
+                  <div className="relative">
+                    <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                    <Input
+                      type="password"
+                      {...field}
+                      className="pl-10"
+                      placeholder="Enter your password"
+                    />
+                  </div>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <Button type="submit" className="w-full" size="lg" disabled={isSubmitting}>
+              {isSubmitting ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  Please wait
+                </>
+              ) : (
+                <>
+                  Sign In
+                  <ArrowRight className="ml-2 h-4 w-4" />
+                </>
+              )}
             </Button>
-          </div>
-
-          <Button type="submit" className="w-full" size="lg">
-            Sign In
-            <ArrowRight className="ml-2 h-4 w-4" />
-          </Button>
-        </form>
-
+          </form>
+        </Form>
         <div className="relative">
           <div className="absolute inset-0 flex items-center">
             <Separator className="w-full" />

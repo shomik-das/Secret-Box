@@ -9,25 +9,24 @@ export const options: NextAuthOptions = {
         CredentialsProvider({
             name: "Credentials",
             credentials: {
-                username: { label: "Username", type: "text", placeholder: "Username or Email" },
+                identifier: { label: "identifier", type: "text", placeholder: "Username or Email" },
                 password: { label: "Password", type: "password", placeholder: "Password" }
             },
             async authorize(credentials, req): Promise<any> {
-                if(!credentials?.username || !credentials?.password){
-                    throw new Error("No credentials provided");
+                if(!credentials?.identifier || !credentials?.password){
+                    throw new Error("Please enter all the fields");
                 }
-                try{
                     await dbConnection();
                     const user = await User.findOne({
                         $or: [
-                            { username: credentials?.username },
-                            { email: credentials?.username }
+                            { username: credentials?.identifier },
+                            { email: credentials?.identifier }
                         ]
                     });
                     if(!user){
                         throw new Error("No user found with the given username or email");
                     }
-                    if(user.isVerify){
+                    if(!user.isVerify){
                         throw new Error("Please verify your email to login");
                     }
                     const isPasswordCorrect = await bcrypt.compare(credentials!.password, user.password);
@@ -35,10 +34,6 @@ export const options: NextAuthOptions = {
                         throw new Error("Incorrect password");
                     }
                     return user;
-                }
-                catch(err){
-                    console.log(err);
-                }
             }
         })
     ],
