@@ -3,6 +3,8 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import  dbConnection  from "@/lib/dbConnection";
 import User from "@/model/User";
 import bcrypt from "bcryptjs";
+import GoogleProvider from "next-auth/providers/google";
+import GitHubProvider from "next-auth/providers/github";
 
 export const options: NextAuthOptions = {
     providers: [
@@ -35,8 +37,17 @@ export const options: NextAuthOptions = {
                     }
                     return user;
             }
+        }),
+        GoogleProvider({
+            clientId: process.env.GOOGLE_CLIENT_ID!,
+            clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+        }),
+        GitHubProvider({
+            clientId: process.env.GITHUB_CLIENT_ID!,
+            clientSecret: process.env.GITHUB_CLIENT_SECRET!,
         })
     ],
+
     callbacks: {
         async jwt({ token, user }) {
             if (user) {
@@ -50,7 +61,7 @@ export const options: NextAuthOptions = {
         },
         async session({ session, token }) {
             if (token) {
-                session.user._id = token.id as string;
+                session.user._id = token._id as string;
                 session.user.username = token.username as string;
                 session.user.email = token.email as string;
                 session.user.isVerify = token.isVerify as boolean;
@@ -60,10 +71,11 @@ export const options: NextAuthOptions = {
         }
     },
     pages:{
-        signIn: '/signin',
+        signIn: '/auth',
     },
     session: {
         strategy: 'jwt',
+        maxAge: 7 * 24 * 60 * 60, // default it last for 30 days
     },
-    secret: process.env.JWT_SECRET,
+    secret: process.env.NEXTAUTH_SECRET,
 }

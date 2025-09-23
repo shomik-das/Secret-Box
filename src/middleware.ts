@@ -1,30 +1,26 @@
 import { NextResponse, NextRequest } from 'next/server'
-// export { default } from "next-auth/middleware"
 import { getToken } from 'next-auth/jwt'
 
-// This function can be marked `async` if using `await` inside
 export async function middleware(request: NextRequest) {
-  const token = await getToken({ req: request});
+  const token = await getToken({ req: request , secret: process.env.NEXTAUTH_SECRET})
   const url = request.nextUrl
-
-  if(token){
-    if(url.pathname === '/signin' || url.pathname === '/signup' || url.pathname === '/verify'){
+  console.log('Token: ', token);
+  if (token) {
+    if (url.pathname === '/auth') {
       return NextResponse.redirect(new URL('/dashboard', request.url))
     }
-    return NextResponse.next();
+    return NextResponse.next() //Let the request continue to the page or API route it was originally going to.
+  } else {
+    if (url.pathname === '/auth') {
+      return NextResponse.next() // allow unauthenticated users
+    }
+    return NextResponse.redirect(new URL('/auth', request.url)) // protect dashboard
   }
-  else{
-    if (url.pathname === '/signin' || url.pathname === '/signup' || url.pathname === '/verify') {
-      return NextResponse.next(); // Allow public routes without authentication
-      }
-  }
-  return NextResponse.redirect(new URL('/home', request.url))
 }
+
 export const config = {
   matcher: [
-    '/signin',
-    '/signup',
-    '/verify/:path*',
+    '/auth',
     '/dashboard/:path*',
   ],
 }
