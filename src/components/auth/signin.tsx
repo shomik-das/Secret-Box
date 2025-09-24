@@ -106,7 +106,7 @@ export default function signin() {
             />
             <div className="flex items-center justify-end">
               <Button type="button" variant="link" className="px-0 text-sm text-muted-foreground hover:text-primary" 
-              onClick={() => router.push("/auth/send-otp")}
+              onClick={() => router.push("/auth/reset-link")}
               >
               Forgot password?
               </Button>

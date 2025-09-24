@@ -2,10 +2,10 @@ import * as React from "react";
 
 interface EmailTemplateProps {
   username: string;
-  otp: string;
+  resetLink: string;
 }
 
-export default function EmailTemplate ({ username, otp }: EmailTemplateProps) {
+export default function EmailTemplate({ username, resetLink }: EmailTemplateProps) {
   return (
     <div
       style={{
@@ -20,7 +20,7 @@ export default function EmailTemplate ({ username, otp }: EmailTemplateProps) {
     >
       <h2 style={{ color: "#333" }}>Hello {username},</h2>
       <p style={{ fontSize: "16px", color: "#555" }}>
-        Thank you for signing up! Use the OTP below to verify your account:
+        You requested to reset your password. Click the link below to set a new password:
       </p>
 
       <div
@@ -33,21 +33,21 @@ export default function EmailTemplate ({ username, otp }: EmailTemplateProps) {
           margin: "20px 0",
         }}
       >
-        <span
+        <a
+          href={resetLink}
           style={{
-            fontSize: "24px",
+            fontSize: "18px",
             fontWeight: "bold",
-            letterSpacing: "4px",
             color: "#0070f3",
+            textDecoration: "none",
           }}
         >
-          {otp}
-        </span>
+          Reset Password
+        </a>
       </div>
 
       <p style={{ fontSize: "14px", color: "#777" }}>
-        This OTP is valid for the next <strong>10 minutes</strong>. Please do
-        not share it with anyone.
+        This link is valid for the next <strong>10 minutes</strong>. Please do not share it with anyone.
       </p>
 
       <p style={{ fontSize: "14px", color: "#777", marginTop: "30px" }}>

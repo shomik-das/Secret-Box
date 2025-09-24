@@ -9,6 +9,8 @@ export interface User extends Document {
     verifyCodeExpiry: Date;
     isVerify: boolean;
     isAcceptingMessages: boolean;
+    resetToken?: string;
+    resetTokenExpiry?: Date;
     messages: mongoose.Types.ObjectId[];
     createdAt: Date;
 }
@@ -43,6 +45,12 @@ const userSchema: Schema<User> = new Schema({
     isVerify: {
         type: Boolean,
         default: false,
+    },
+    resetToken: {
+        type: String,
+    },
+    resetTokenExpiry: {
+        type: Date,
     },
     isAcceptingMessages: {
         type: Boolean,

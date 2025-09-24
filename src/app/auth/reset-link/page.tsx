@@ -1,4 +1,4 @@
-import SendOtp from "@/components/auth/sendOtp";
+import SendOtp from "@/components/auth/resetLink";
 const page = () => {
     return (
         <SendOtp/>

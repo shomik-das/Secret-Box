@@ -7,21 +7,18 @@ import { toast } from "sonner"
 import { ArrowLeft, Mail, RefreshCw, Loader2 } from "lucide-react"
 import { OTPInput, SlotProps } from "input-otp"
 import { InputOTP, InputOTPSlot} from "@/components/ui/input-otp"
-import { useSearchParams, useParams, useRouter } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 
 export default function verifyOtp() {
   const [otp, setOtp] = useState("")
   const [isLoading, setIsLoading] = useState(false)
   const [isResending, setIsResending] = useState(false)
   const [timeLeft, setTimeLeft] = useState(60)
-  const searchParams = useSearchParams();
-  const flow = searchParams.get('flow');
   const params = useParams<{ username: string }>();
   
   const router = useRouter();
 
   const username = params.username;
-  const nextStep = flow === "signup" ? "/auth/signin-signup" : `/auth/reset-password/${username}`;
 
   // Timer for resend OTP
   useEffect(() => {
@@ -51,7 +48,7 @@ export default function verifyOtp() {
         return
       }
       toast.success(resData.message)
-      router.push(nextStep);
+      router.push("/auth/signin-signup");
     } catch (error) {
       console.error("Error verifying email: ", error)
       toast.error("Something went wrong")
@@ -155,7 +152,7 @@ export default function verifyOtp() {
           className="w-full text-muted-foreground hover:text-foreground"
         >
           <ArrowLeft className="w-4 h-4 mr-2" />
-          Back to { flow === "signup" ? "Sign Up" : "Reset Request" }
+          Back to Sign In
         </Button>
       </CardContent>
     </Card>

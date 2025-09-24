@@ -20,7 +20,7 @@ const  sendOtp = () => {
     e.preventDefault()
     try {
       setIsLoading(true)
-      const res = await fetch("/api/reset-pass-otp", {
+      const res = await fetch("/api/reset-link", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email }),
@@ -31,9 +31,8 @@ const  sendOtp = () => {
         return
       }
       setEmail("")
-      const {username} = resData.data;
       toast.success(resData.message)
-      router.push(`/auth/verify-otp/${username}?flow=reset`);
+      router.push("/auth/signin-signup");
     }
     catch (err){
       console.error("Error sending reset password OTP: ", err)

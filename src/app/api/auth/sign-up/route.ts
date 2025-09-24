@@ -1,7 +1,7 @@
 import dbConnection from "@/lib/dbConnection";
 import User from "@/model/User";
 import bcrypt from "bcryptjs";
-import sendEmail from "@/helper/sendEmail";
+import sendEmail from "@/helper/sendOtpEmail";
 import { NextResponse } from "next/server";
 
 export const POST = async (request: Request) => {

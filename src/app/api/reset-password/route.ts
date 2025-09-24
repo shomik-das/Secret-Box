@@ -7,17 +7,31 @@ import bcrypt from "bcryptjs";
 export const POST = async (request: Request) => {
     try{
         await dbConnection();
-        const {username, newPassword} = await request.json();
+        const {username, newPassword, token} = await request.json();
 
         const user = await User.findOne({username});
         if(!user){
             return NextResponse.json({
                 success: false,
-                message: "User not found"
+                message: "User does not exist",
             }, {status: 404});
+        }
+        if(user.resetToken !== token){
+            return NextResponse.json({
+                success: false,
+                message: "Reset password link invalid"
+            }, {status: 400});
+        }
+        if(user.resetTokenExpiry! < new Date()){
+            return NextResponse.json({
+                success: false,
+                message: "Reset password link has expired"
+            }, {status: 400});
         }
         const hashedPassword = await bcrypt.hash(newPassword, 10);
         user.password = hashedPassword;
+        user.resetToken = undefined;
+        user.resetTokenExpiry = undefined;
         await user.save();
         return NextResponse.json({
             success: true,

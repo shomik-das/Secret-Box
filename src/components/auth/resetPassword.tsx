@@ -24,7 +24,8 @@ const  resetPassword = () => {
   const params = useParams<{ username: string }>();
   const username = params.username;
   const router = useRouter();
-   
+  const searchParams = useSearchParams();
+  const token = searchParams.get("token");
 
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -45,7 +46,7 @@ const  resetPassword = () => {
         const res = await fetch("/api/reset-password", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ username: username, newPassword: formData.password }),
+            body: JSON.stringify({ username: username, newPassword: formData.password, token: token}),
         })
         const resData = await res.json()
         if (!resData.success) {
@@ -136,7 +137,7 @@ const  resetPassword = () => {
             </div>
             {formData.confirmPassword.length > 0 && (
                 <p className={`text-sm mt-1 ${isMatch ? "text-green-500" : "text-red-500"}`}>
-                    {isMatch ? "Passwords match": "Passwords do not match"}
+                    {isMatch ? "Password match": "Password do not match"}
                 </p>
             )}
           </div>

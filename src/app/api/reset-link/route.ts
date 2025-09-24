@@ -1,7 +1,8 @@
 import dbConnection from "@/lib/dbConnection";
 import User from "@/model/User";
-import sendEmail from "@/helper/sendEmail";
+import sendEmail from "@/helper/sendLinkEmail";
 import { NextResponse } from "next/server";
+import crypto from "crypto";
 
 export const POST = async (request: Request) => {
     try{
@@ -20,22 +21,23 @@ export const POST = async (request: Request) => {
                 message: 'User is not verified. Please sign up first',
             }, {status: 403} );
         }
-        const verifyCode = Math.floor(100000 + Math.random() * 900000).toString();
-        const verifyCodeExpiry = new Date();
-        verifyCodeExpiry.setMinutes(verifyCodeExpiry.getMinutes() + 10);
-        user.verifyCode = verifyCode;
-        user.verifyCodeExpiry = verifyCodeExpiry;
+        const resetToken = crypto.randomBytes(32).toString('hex');
+        const resetTokenExpiry = new Date(Date.now() + 10 * 60 * 1000);
+        user.resetToken = resetToken;
+        user.resetTokenExpiry = resetTokenExpiry;
         await user.save();
-        const emailResponse = await sendEmail(user.email, user.username, verifyCode);
+        const resetLink = `${process.env.HOST}/auth/reset-password/${user.username}?token=${resetToken}`;
+
+        const emailResponse = await sendEmail(user.email, user.username, resetLink);
         if(!emailResponse.success){
             return NextResponse.json({
                 success: false,
-                message: 'Error sending verification email',
+                message: 'Error sending reset email',
             }, {status: 500} );
         }
         return NextResponse.json({
             success: true,
-            message: 'Verification email sent successfully',
+            message: 'Reset email sent successfully',
             data: {
                 email: user.email,
                 username: user.username,
@@ -43,10 +45,10 @@ export const POST = async (request: Request) => {
         }, {status: 200} );
     }
     catch(err){
-        console.error('Error in reset-pass-otp route:', err);
+        console.error('Error in reset-link route:', err);
         return NextResponse.json({
             success: false,
-            message: 'Error sending verification email',
+            message: 'Error sending reset email',
         }, {status: 500} );
     }
 }
