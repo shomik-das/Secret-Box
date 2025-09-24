@@ -29,11 +29,11 @@ export const options: NextAuthOptions = {
                         throw new Error("No user found with the given username or email");
                     }
                     if(!user.isVerify){
-                        throw new Error("Please verify your email to login");
+                        throw new Error("User is not verified. Please sign up first");
                     }
                     const isPasswordCorrect = await bcrypt.compare(credentials!.password, user.password);
                     if(!isPasswordCorrect){
-                        throw new Error("Incorrect password");
+                        throw new Error("Please enter a valid password");
                     }
                     return user;
             }

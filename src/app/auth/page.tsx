@@ -1,5 +1,5 @@
 import { AuthPage } from "@/components/auth/authPage";
 const page = () => {
-    return <AuthPage />;
+    // return <AuthPage />;
 }
 export default page;

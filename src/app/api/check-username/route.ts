@@ -28,7 +28,7 @@ export async function GET(request: Request) {
             }), {status: 400});
         }
         const user = await User.findOne({username, isVerify: true});
-        if(user){
+        if(user && user.isVerify){
             return new NextResponse(JSON.stringify({
                 success: false,
                 message: "Username is already taken"

@@ -4,23 +4,24 @@ import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { toast } from "sonner"
-import { ArrowLeft, Mail, RefreshCw } from "lucide-react"
+import { ArrowLeft, Mail, RefreshCw, Loader2 } from "lucide-react"
 import { OTPInput, SlotProps } from "input-otp"
 import { InputOTP, InputOTPSlot} from "@/components/ui/input-otp"
+import { useSearchParams, useParams, useRouter } from 'next/navigation';
 
-export default function OTPVerification({
-  usernameProp,
-  setShowVerifyPageProp,
-  emailProp,
-}: {
-  usernameProp: string
-  setShowVerifyPageProp: Function
-  emailProp: string
-}) {
+export default function verifyOtp() {
   const [otp, setOtp] = useState("")
   const [isLoading, setIsLoading] = useState(false)
   const [isResending, setIsResending] = useState(false)
   const [timeLeft, setTimeLeft] = useState(60)
+  const searchParams = useSearchParams();
+  const flow = searchParams.get('flow');
+  const params = useParams<{ username: string }>();
+  
+  const router = useRouter();
+
+  const username = params.username;
+  const nextStep = flow === "signup" ? "/auth/signin-signup" : `/auth/reset-password/${username}`;
 
   // Timer for resend OTP
   useEffect(() => {
@@ -41,7 +42,7 @@ export default function OTPVerification({
       const res = await fetch("/api/verify-otp", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username: usernameProp, code: otp }),
+        body: JSON.stringify({ username: username, code: otp }),
       })
       const resData = await res.json()
       if (!resData.success) {
@@ -50,7 +51,7 @@ export default function OTPVerification({
         return
       }
       toast.success(resData.message)
-      setShowVerifyPageProp(false)
+      router.push(nextStep);
     } catch (error) {
       console.error("Error verifying email: ", error)
       toast.error("Something went wrong")
@@ -66,7 +67,7 @@ export default function OTPVerification({
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            username: usernameProp
+            username: username
           }),
         })
         const resData = await res.json();
@@ -92,10 +93,9 @@ export default function OTPVerification({
         <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mx-auto">
           <Mail className="w-6 h-6 text-primary" />
         </div>
-        <CardTitle className="text-2xl font-bold">Verify Your Email</CardTitle>
+        <CardTitle className="text-2xl font-bold">Verification Code</CardTitle>
         <CardDescription>
-          We've sent a 6-digit verification code to{" "}
-          <span className="font-medium text-foreground">{emailProp}</span>
+          We've sent a 6-digit verification code to your email address
         </CardDescription>
       </CardHeader>
 
@@ -144,18 +144,18 @@ export default function OTPVerification({
             ) : timeLeft > 0 ? (
               `Resend in ${timeLeft}s`
             ) : (
-              "Resend OTP"
+              "Resend Code"
             )}
           </Button>
         </div>
 
         <Button
           variant="ghost"
-          onClick={() => setShowVerifyPageProp(false)}
+          onClick={() => router.back()}
           className="w-full text-muted-foreground hover:text-foreground"
         >
           <ArrowLeft className="w-4 h-4 mr-2" />
-          Back to Sign Up
+          Back to { flow === "signup" ? "Sign Up" : "Reset Request" }
         </Button>
       </CardContent>
     </Card>

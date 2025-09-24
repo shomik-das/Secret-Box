@@ -16,13 +16,15 @@ import { Separator } from "@/components/ui/separator"
 import { FcGoogle } from "react-icons/fc";
 import { FaGithub } from "react-icons/fa"; 
 import { signIn } from "next-auth/react"
+import { useRouter } from "next/navigation"
 
-const signup = ({ setUsernameProp, setShowVerifyPageProp, setEmailProp }: { setUsernameProp: Function; setShowVerifyPageProp: Function, setEmailProp: Function}) => {
+const signup = () => {
   const [username, setUsername] = useState("")
   const [usernameMessage, setUsernameMessage] = useState("")
   const [isCheckingUsername, setIsCheckingUsername] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const debounced = useDebounceCallback(setUsername, 400)
+  const router = useRouter();
 
   const form = useForm({
     resolver: zodResolver(signUpSchema),
@@ -77,10 +79,8 @@ const signup = ({ setUsernameProp, setShowVerifyPageProp, setEmailProp }: { setU
         toast.error(resData.message)
         return
       }
+      router.push(`/auth/verify-otp/${username}?flow=signup`)
       toast.success(resData.message)
-      setUsernameProp(data.username)
-      setEmailProp(data.email)
-      setShowVerifyPageProp(true)
     } catch (err) {
       console.error("Error signing up: ", err)
       toast.error("Something went wrong")
@@ -123,9 +123,7 @@ const signup = ({ setUsernameProp, setShowVerifyPageProp, setEmailProp }: { setU
                     <>
                       {isCheckingUsername && <Loader2 className="animate-spin h-4 w-4" />}
                       {!isCheckingUsername && usernameMessage && (
-                        <p
-                          className={`text-sm ${
-                            usernameMessage === "Username is available"
+                        <p className={`text-sm ${usernameMessage === "Username is available"
                               ? "text-green-500"
                               : "text-red-500"
                           }`}
@@ -181,7 +179,6 @@ const signup = ({ setUsernameProp, setShowVerifyPageProp, setEmailProp }: { setU
               ) : (
                 <>
                   Sign Up
-                  <ArrowRight className="ml-2 h-4 w-4" />
                 </>
               )}
             </Button>

@@ -9,7 +9,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Form, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
-import { Loader2, User, Mail, Lock, ArrowRight } from "lucide-react"
+import { Loader2, User, Lock, ArrowRight } from "lucide-react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
 import { signIn } from "next-auth/react"
@@ -89,10 +89,10 @@ export default function signin() {
               name="password"
               control={form.control}
               render={({ field }) => (
-                <FormItem>
+                <FormItem className="mb-0">
                   <FormLabel>Password</FormLabel>
                   <div className="relative">
-                    <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                    <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground"/>
                     <Input
                       type="password"
                       {...field}
@@ -104,6 +104,13 @@ export default function signin() {
                 </FormItem>
               )}
             />
+            <div className="flex items-center justify-end">
+              <Button type="button" variant="link" className="px-0 text-sm text-muted-foreground hover:text-primary" 
+              onClick={() => router.push("/auth/send-otp")}
+              >
+              Forgot password?
+              </Button>
+            </div>
             <Button type="submit" className="w-full" size="lg" disabled={isSubmitting}>
               {isSubmitting ? (
                 <>
@@ -113,7 +120,6 @@ export default function signin() {
               ) : (
                 <>
                   Sign In
-                  <ArrowRight className="ml-2 h-4 w-4" />
                 </>
               )}
             </Button>

@@ -1,17 +1,6 @@
-"use client";
-
-import { useState } from "react";
-import Signin from "./signin";
-import Signup from "./signup";
-import VerifyPage from "./verifyOtp";
-import { Button } from "@/components/ui/button";
 import { Lock, User } from "lucide-react";
 
-export function AuthPage() {
-  const [isSignin, setIsSignin] = useState<boolean>(true);
-  const [showVerifyPage, setShowVerifyPage] = useState<boolean>(false);
-  const [username, setUsername] = useState<string>("");
-  const [email, setEmail] = useState<string>("");
+export default function layout ({children}: {children: React.ReactNode}) {
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-card/50 to-background flex items-center justify-center p-4">
       <div className="w-full max-w-6xl grid lg:grid-cols-2 gap-8 items-center">
@@ -51,34 +40,7 @@ export function AuthPage() {
 
         {/* Right side - Auth form */}
         <div className="w-full max-w-md mx-auto">
-          {! showVerifyPage && (
-            <div className="mb-6">
-              <div className="flex items-center justify-center space-x-1 bg-muted p-1 rounded-lg">
-                <Button
-                  variant={isSignin ? "default" : "ghost"}
-                  onClick={() => setIsSignin(true)}
-                  className="flex-1 transition-all duration-200"
-                >
-                  Login
-                </Button>
-                <Button
-                  variant={!isSignin ? "default" : "ghost"}
-                  onClick={() => setIsSignin(false)}
-                  className="flex-1 transition-all duration-200"
-                >
-                  Sign Up
-                </Button>
-              </div>
-            </div>
-          )}
-          
-          {showVerifyPage ? (
-            <VerifyPage usernameProp={username} emailProp={email}  setShowVerifyPageProp={setShowVerifyPage}/>
-          ) : isSignin ? (
-            <Signin />
-          ) : (
-            <Signup setUsernameProp={setUsername} setShowVerifyPageProp={setShowVerifyPage} setEmailProp={setEmail} />
-          )}
+          {children}
         </div>
       </div>
     </div>
