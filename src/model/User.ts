@@ -11,6 +11,8 @@ export interface User extends Document {
     isAcceptingMessages: boolean;
     resetToken?: string;
     resetTokenExpiry?: Date;
+    otpSession ?: boolean;
+    otpSessionExpiry ?: Date;
     messages: mongoose.Types.ObjectId[];
     createdAt: Date;
 }
@@ -50,6 +52,13 @@ const userSchema: Schema<User> = new Schema({
         type: String,
     },
     resetTokenExpiry: {
+        type: Date,
+    },
+    otpSession: {
+        type: Boolean,
+        default: false,
+    },
+    otpSessionExpiry: {
         type: Date,
     },
     isAcceptingMessages: {

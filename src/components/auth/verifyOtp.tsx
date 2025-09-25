@@ -8,6 +8,7 @@ import { ArrowLeft, Mail, RefreshCw, Loader2 } from "lucide-react"
 import { OTPInput, SlotProps } from "input-otp"
 import { InputOTP, InputOTPSlot} from "@/components/ui/input-otp"
 import { useParams, useRouter } from 'next/navigation';
+import { signIn } from "next-auth/react";
 
 export default function verifyOtp() {
   const [otp, setOtp] = useState("")
@@ -48,6 +49,19 @@ export default function verifyOtp() {
         return
       }
       toast.success(resData.message)
+      setOtp("")
+      const signInRes = await signIn("credentials", {
+        redirect: false,
+        identifier: username,
+        password: "otp-bypass",
+      })
+      if (signInRes?.error) {
+        toast.error(signInRes.error)
+        return
+      }
+      else if (signInRes?.ok) {
+        router.push("/dashboard")
+      }
       router.push("/auth/signin-signup");
     } catch (error) {
       console.error("Error verifying email: ", error)

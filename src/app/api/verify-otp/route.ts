@@ -49,6 +49,8 @@ export async function POST(request: Request) {
         user.isVerify = true;
         user.verifyCode = "USED";
         user.verifyCodeExpiry = new Date(0);
+        user.otpSession = true;
+        user.otpSessionExpiry = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes from now
         const updatedUser = await user.save();
         if(!updatedUser){
             console.log("Error in updating user") 

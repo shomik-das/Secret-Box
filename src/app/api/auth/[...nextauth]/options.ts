@@ -1,10 +1,11 @@
 import { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import  dbConnection  from "@/lib/dbConnection";
+import dbConnection  from "@/lib/dbConnection";
 import User from "@/model/User";
 import bcrypt from "bcryptjs";
 import GoogleProvider from "next-auth/providers/google";
 import GitHubProvider from "next-auth/providers/github";
+import { use } from "react";
 
 export const options: NextAuthOptions = {
     providers: [
@@ -18,24 +19,35 @@ export const options: NextAuthOptions = {
                 if(!credentials?.identifier || !credentials?.password){
                     throw new Error("Please enter all the fields");
                 }
-                    await dbConnection();
-                    const user = await User.findOne({
-                        $or: [
-                            { username: credentials?.identifier },
-                            { email: credentials?.identifier }
-                        ]
-                    });
-                    if(!user){
-                        throw new Error("No user found with the given username or email");
+                const {identifier, password} = credentials;
+                await dbConnection();
+                const user = await User.findOne({
+                    $or: [
+                        { username: credentials?.identifier },
+                        { email: credentials?.identifier }
+                    ]
+                });
+                if(!user){
+                    throw new Error("No user found with the given username or email");
+                }
+                if(!user.isVerify){
+                    throw new Error("User is not verified. Please sign up first");
+                }
+                if(password === "otp-bypass"){
+                    if(!user.otpSession || !user.otpSessionExpiry || user.otpSessionExpiry < new Date()){
+                        throw new Error("Please sign in with your password");
                     }
-                    if(!user.isVerify){
-                        throw new Error("User is not verified. Please sign up first");
-                    }
-                    const isPasswordCorrect = await bcrypt.compare(credentials!.password, user.password);
-                    if(!isPasswordCorrect){
-                        throw new Error("Please enter a valid password");
-                    }
+                    user.otpSession = false;
+                    user.otpSessionExpiry = undefined;
+                    await user.save();
                     return user;
+                }
+                    
+                const isPasswordCorrect = await bcrypt.compare(credentials!.password, user.password);
+                if(!isPasswordCorrect){
+                    throw new Error("Please enter a valid password");
+                }
+                return user;
             }
         }),
         GoogleProvider({
