@@ -68,6 +68,7 @@ export const options: NextAuthOptions = {
                 token.email = user.email;
                 token.isVerify = user.isVerify;
                 token.isAcceptingMessages = user.isAcceptingMessages;
+                token.image = user.image;
             }
             return token;
         },
@@ -78,6 +79,7 @@ export const options: NextAuthOptions = {
                 session.user.email = token.email as string;
                 session.user.isVerify = token.isVerify as boolean;
                 session.user.isAcceptingMessages = token.isAcceptingMessages as boolean;
+                session.user.image = token.image as string | undefined;
             }
             return session;
         }

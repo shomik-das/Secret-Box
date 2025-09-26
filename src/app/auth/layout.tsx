@@ -2,8 +2,8 @@ import { Lock, User } from "lucide-react";
 
 export default function layout ({children}: {children: React.ReactNode}) {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-card/50 to-background flex items-center justify-center p-4">
-      <div className="w-full max-w-6xl grid lg:grid-cols-2 gap-8 items-center">
+    <div className="min-h-[calc(100vh-4rem)] bg-gradient-to-br from-background via-card/50 to-background flex items-center justify-center">
+      <div className="w-full grid lg:grid-cols-2 gap-8 items-center">
         {/* Left side - Welcome content */}
         <div className="hidden lg:flex flex-col justify-center space-y-6 px-8">
           <div className="space-y-4">
