@@ -5,7 +5,6 @@ import Link from "next/link"
 import { useSession, signOut } from "next-auth/react"
 import { User } from "next-auth"
 import UserMenu from "@/components/user-menu"
-import InfoMenu from "@/components/info-menu"
 import Logo from "@/components/logo"
 import NotificationMenu from "@//components/notification-menu"
 import { Button } from "@/components/ui/button"
@@ -94,7 +93,6 @@ export default function Navbar() {
         {/* Right side */}
         <div className="flex items-center gap-4">
           <div className="flex items-center gap-2">
-            <InfoMenu />
             <NotificationMenu />
           </div>
 

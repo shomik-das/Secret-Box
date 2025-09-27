@@ -8,13 +8,10 @@ export default function layout ({children}: {children: React.ReactNode}) {
         <div className="hidden lg:flex flex-col justify-center space-y-6 px-8">
           <div className="space-y-4">
             <h1 className="text-4xl font-bold text-balance leading-tight">
-              Welcome to our{" "}
-              <span className="text-primary">modern platform</span>
+              Share Freely, Stay Anonymous
             </h1>
             <p className="text-lg text-muted-foreground text-pretty">
-              Join thousands of users who trust our secure and intuitive
-              authentication system. Experience seamless access to your account
-              with our modern design.
+              Discover a privacy-first messaging platform where you can receive honest, anonymous messages safely and securely. Stay in control while giving others the freedom to express themselves.
             </p>
           </div>
 
@@ -24,7 +21,7 @@ export default function layout ({children}: {children: React.ReactNode}) {
                 <Lock className="w-4 h-4 text-primary" />
               </div>
               <span className="text-sm text-muted-foreground">
-                Bank-level security
+                OTP-based secure login
               </span>
             </div>
             <div className="flex items-center space-x-3">
@@ -32,7 +29,7 @@ export default function layout ({children}: {children: React.ReactNode}) {
                 <User className="w-4 h-4 text-primary" />
               </div>
               <span className="text-sm text-muted-foreground">
-                Personalized experience
+                Anonymous & personalized messaging
               </span>
             </div>
           </div>
