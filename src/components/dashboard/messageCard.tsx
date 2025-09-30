@@ -20,26 +20,26 @@ type Props = {
     onMessageDelete: (messageId: string) => void;
 }
 const messageCard = () => {
-    // const handleDelete = () => {
-    //     try{
-    //         const res = fetch(`/api/message-delete`, {
-    //             method: "DELETE",
-    //             headers: {
-    //                 "Content-Type": "application/json",
-    //             },
-    //             body: JSON.stringify({id: message._id}),
-    //         })
-    //         // if(!res.success){
-    //         //     toast.error("Failed to delete message")
-    //         // }
-    //         onMessageDelete(message.id);
-    //         toast.success("Message deleted successfully")
-    //     }
-    //     catch(err){
-    //         console.error("Error deleting message: ", err)
-    //         toast.error("Something went wrong")
-    //     }
-    // }
+    const handleDelete = () => {
+        try{
+            const res = fetch(`/api/message-delete`, {
+                method: "DELETE",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                //body: JSON.stringify({id: message._id}),
+            })
+            // if(!res.success){
+            //     toast.error("Failed to delete message")
+            // }
+            //onMessageDelete(message.id);
+            toast.success("Message deleted successfully")
+        }
+        catch(err){
+            console.error("Error deleting message: ", err)
+            toast.error("Something went wrong")
+        }
+    }
     return (
     <Card>
         <CardHeader>

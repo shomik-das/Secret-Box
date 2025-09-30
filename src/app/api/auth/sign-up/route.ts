@@ -52,6 +52,7 @@ export const POST = async (request: Request) => {
                 verifyCodeExpiry,
                 image: `https://ui-avatars.com/api/?name=${username}&background=random&size=128`,
                 messages: [],
+                
             });
             if(!newUser){
                 return NextResponse.json({

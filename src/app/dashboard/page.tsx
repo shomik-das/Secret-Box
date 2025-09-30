@@ -3,7 +3,9 @@ import Dashboard from "@/components/dashboard/dashboardPage"
 const page = () =>{
     return(
         <>
-        <Dashboard/>
+        <div className="min-h-[calc(100vh-4rem)]">
+            <Dashboard/>
+        </div>
         </>
     )
 }

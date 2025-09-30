@@ -12,22 +12,22 @@ export async function POST(request: Request) {
         if(!session || !user){
             return new Response(JSON.stringify({
                 success: false,
-                message: "Unauthorized"
+                message: "User not authenticated"
             }), {status: 401});
         }
         const userId = user._id;
-        const {acceptMessage} = await request.json();
+        const {acceptMessages} = await request.json();
 
-        const updatedUser = await User.findByIdAndUpdate(userId, {isAcceptingMessages: acceptMessage}, {new: true});
+        const updatedUser = await User.findByIdAndUpdate(userId, {isAcceptingMessages: acceptMessages}, {new: true});
         if(!updatedUser){
             return new Response(JSON.stringify({
                 success: false,
-                message: "User not found"
+                message: "User does not exist"
             }), {status: 404});
         }
         return new Response(JSON.stringify({
             success: true,
-            message: `You have ${acceptMessage ? "enabled" : "disabled"} accepting messages`,
+            message: `You have ${acceptMessages ? "enabled" : "disabled"} accepting messages`,
             isAcceptingMessages: updatedUser.isAcceptingMessages
         }), {status: 200});
     }
@@ -48,7 +48,7 @@ export async function GET(request: Request) {
         if(!session || !user){
             return new Response(JSON.stringify({
                 success: false,
-                message: "Unauthorized"
+                message: "User not authenticated"
             }), {status: 401});
         }
         const userId = user._id;
@@ -56,7 +56,7 @@ export async function GET(request: Request) {
         if(!existingUser){
             return new Response(JSON.stringify({ 
                 success: false,
-                message: "User not found"
+                message: "User does not exist"
             }), {status: 404});
         }
         return new Response(JSON.stringify({

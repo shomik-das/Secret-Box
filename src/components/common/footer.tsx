@@ -11,7 +11,7 @@ const footer = () => {
   ];
 
   return (
-    <footer className="w-full bg-secondary/50 text-foreground py-6 mt-auto h-fit rounded-t-2xl ">
+    <footer className="w-full bg-secondary/50 text-foreground py-6 mt-8 h-fit rounded-t-2xl">
       <div className="max-w-6xl mx-auto flex flex-wrap justify-center gap-8">
         {links.map((link) => (
           <a
