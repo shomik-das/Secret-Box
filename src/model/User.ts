@@ -3,6 +3,7 @@ import mongoose, { Document, Schema } from 'mongoose';
 
 export interface User extends Document {
     _id: mongoose.Types.ObjectId;
+    name: string;
     username: string;
     email: string;
     password: string;
@@ -14,12 +15,19 @@ export interface User extends Document {
     resetTokenExpiry?: Date;
     otpSession ?: boolean;
     otpSessionExpiry ?: Date;
-    image?: string;
+    image: string;
+    headline?: string;
+    question?: string;
     messages: mongoose.Types.ObjectId[];
     createdAt: Date;
 }
 
 const userSchema: Schema<User> = new Schema({
+    name: {
+        type: String,
+        trim: true,
+        default: 'New User',
+    },
     username: {
         type: String,
         required: [true, 'Username is required'],
@@ -70,6 +78,14 @@ const userSchema: Schema<User> = new Schema({
     image: {
         type: String,
         required: true,
+    },
+    headline: {
+        type: String,
+        trim: true,
+    },
+    question: {
+        type: String,
+        trim: true,
     },
     messages: [{
         type: mongoose.Schema.Types.ObjectId,

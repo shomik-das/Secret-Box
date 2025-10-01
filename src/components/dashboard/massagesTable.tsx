@@ -187,10 +187,10 @@ const  MessagesTable =( {messages, setMessages, isLoading, fetchMessages}: Messa
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead className="w-[48px]">Status</TableHead>
+              <TableHead className="w-[80px]">Status</TableHead>
               <TableHead>Message</TableHead>
               <TableHead className="hidden md:table-cell">Received</TableHead>
-              <TableHead className="text-right">Actions</TableHead>
+              <TableHead className="text-left">Actions</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -251,7 +251,7 @@ const  MessagesTable =( {messages, setMessages, isLoading, fetchMessages}: Messa
                 </TableCell>
               </TableRow>
             ))}
-            {filtered.length === 0 && !isLoading && (
+            {filtered && filtered.length === 0 && !isLoading && (
               <TableRow>
                 <TableCell colSpan={4} className="py-10 text-center text-sm text-muted-foreground">
                   No messages to show.
@@ -300,8 +300,8 @@ const  MessagesTable =( {messages, setMessages, isLoading, fetchMessages}: Messa
           </DialogFooter>
         </DialogContent>
       </Dialog>
-
-      <AlertDialog open={confirmOpen} onOpenChange={setConfirmOpen}> //todo: need study open and onOpenChange
+      {/* todo: need study open and onOpenChange */}
+      <AlertDialog open={confirmOpen} onOpenChange={setConfirmOpen}>
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>Delete this message?</AlertDialogTitle>

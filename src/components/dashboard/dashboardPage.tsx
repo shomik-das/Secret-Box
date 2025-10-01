@@ -61,6 +61,7 @@ const dashboard = () =>{
                 }
             })
             const data = await res.json()
+            console.log("data: ", data.data)
             if(!data.success){
                 toast.error(data.message)
                 setMessages([])
@@ -69,7 +70,7 @@ const dashboard = () =>{
             if(refresh){
                 toast.success("Showing latest messages")
             }
-            setMessages(data.messages)
+            setMessages(data.data)
         }
         catch(err){
             console.log(err, "Error fetching messages");
@@ -109,18 +110,13 @@ const dashboard = () =>{
         }
     }
 
-    useEffect(() =>{
-        if(!session || !session.user){
-            return;
-        }
+    useEffect(() =>{    
+        // console.log("hello")
         fetchAcceptMessages()
         fetchMessages()
     },[fetchAcceptMessages, fetchMessages])
 
 
-    if(!session || !session.user){
-        return <div>Please sign in to view your dashboard</div>
-    }
     return(
         <>
             <ShareLink/>

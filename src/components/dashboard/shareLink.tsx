@@ -12,11 +12,12 @@ import { User } from "next-auth"
 const shareLink = () => {
   const [copied, setCopied] = useState(false)
   const {data: session} = useSession();
+  if(!session || !session.user){
+    return null;
+  }
   const {username} = session?.user as User;
   const baseUrl = `${window.location.protocol}//${window.location.host}`
   const link = `${baseUrl}/u/${username}`
-  
-
 
   async function onCopy() {
     try {
