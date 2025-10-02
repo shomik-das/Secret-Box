@@ -34,8 +34,8 @@ const page = () =>{
     },[])
 
   return (
-    <div className="min-h-[calc(100vh-4rem)] bg-gradient-to-br from-purple-50 via-pink-50 to-blue-50 dark:from-purple-950/20 dark:via-pink-950/20 dark:to-blue-950/20 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="mx-auto max-w-3xl">
+    <div className="min-h-[calc(100vh-4rem)] pt-12">
+      <div className="mx-auto max-w-7xl">
         <div className="space-y-12">
           <UserProfile
             name={userData?.name || "John Doe"}
@@ -44,10 +44,10 @@ const page = () =>{
             question={userData?.question || "What's something you've always wanted to tell me but never had the chance?"}
           />
           <MessageForm username={userData?.username} />
-          <div className="flex flex-col items-center justify-center gap-4 py-8">
+          <div className="flex flex-col items-center justify-center gap-4">
             <p className="text-center text-muted-foreground">Want to receive anonymous messages too?</p>
             <Button asChild size="lg" className="font-semibold">
-              <Link href="/signup">Create Your Own Link</Link>
+              <Link href="/auth/signin-signup">Create Your Own Link</Link>
             </Button>
           </div>
         </div>

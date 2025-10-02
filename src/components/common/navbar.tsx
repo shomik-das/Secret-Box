@@ -29,7 +29,7 @@ export default function Navbar() {
   const id = useId()
 
   return (
-    <header className="max-w-7xl mx-auto border-b px-4 md:px-6">
+    <header className="max-w-7xl mx-auto px-4 md:px-6">
       <div className="flex h-16 items-center justify-between gap-4">
         {/* Left side */}
         <div className="flex items-center gap-2">
@@ -100,7 +100,12 @@ export default function Navbar() {
             { !user ? (
                 <Link href="/auth/signin-signup"> <Button>  Sign In</Button></Link>
             ) : (
-            <UserMenu user={user} />
+              <>
+              <div className="">
+                <UserMenu user={user}/>
+              </div>
+
+              </>
             ) }
         </div>
       </div>

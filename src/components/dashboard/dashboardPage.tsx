@@ -5,51 +5,16 @@ import { useForm } from "react-hook-form"
 import { useState } from "react"
 import { toast } from "sonner"
 import { useSession} from "next-auth/react"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { acceptMessageSchema } from "@/schema/acceptMessageSchema"
-import { User } from "next-auth"
 import ShareLink from "./shareLink"
 import { ClientMessage } from "@/types/ClientMessage"
+import SenderControl from "./senderControl"
 
 const dashboard = () =>{
     const [messages, setMessages] = useState<ClientMessage[]>([])
-    const [isMessageLoading, setIsMessageLoading] = useState(false)
-    const [isSwitchLoading, setIsSwitchLoading] = useState(false)
+    const [isMessageLoading, setIsMessageLoading] = useState(true)
     const {data: session} = useSession();
 
-    const form = useForm({
-        resolver: zodResolver(acceptMessageSchema)
-    })
-
-    const {register, handleSubmit, formState: {errors}, reset, watch, setValue} = form 
-
-    const acceptMessages = watch("acceptMessages"); //todo: why use watch here?
-
-
-    const fetchAcceptMessages = useCallback(async() =>{ //todo: why useCallback here?
-        try{
-            setIsSwitchLoading(true)
-            const res = await fetch("/api/accept-messages", {
-                method: "GET",
-                headers: {
-                    "Content-Type": "application/json"
-                }
-            })
-            const data = await res.json()
-            if(!data.success){
-                
-            }
-            setValue("acceptMessages", data.isAcceptingMessages) //todo: study setValue
-        }
-        catch(err){
-            console.log(err, "Error fetching accept messages");
-            toast.error((err as Error).message || "Error fetching messages settings")
-        }
-        finally{
-            setIsSwitchLoading(false)
-        }
-
-    }, [setValue])
+    
 
     const fetchMessages = useCallback(async(refresh: boolean = false) =>{
         try{
@@ -82,45 +47,23 @@ const dashboard = () =>{
         
     },[setIsMessageLoading, setMessages])
 
-    const handleAcceptMessageChange = async() =>{
-        try{
-            setIsSwitchLoading(true)
-            const res = await fetch("/api/accept-messages", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    acceptMessages: !acceptMessages
-                })
-            })
-            const data = await res.json();
-            if(!data.success){
-                toast.error(data.message)
-                return
-            }
-            toast.success(data.message)
-            setValue("acceptMessages", data.isAcceptingMessages)
-        }
-        catch(err){
-            toast.error("Error updating message settings")
-        }
-        finally{
-            setIsSwitchLoading(false)
-        }
-    }
 
     useEffect(() =>{    
-        // console.log("hello")
-        fetchAcceptMessages()
         fetchMessages()
-    },[fetchAcceptMessages, fetchMessages])
+    },[ fetchMessages])
 
 
     return(
         <>
+        <div className="flex flex-col gap-8 pt-12">
             <ShareLink/>
-            <MessageTable messages={messages} setMessages={setMessages} isLoading={isMessageLoading} fetchMessages={fetchMessages}/>
+            <SenderControl/>
+            <MessageTable 
+            messages={messages} 
+            setMessages={setMessages} 
+            isLoading={isMessageLoading} 
+            fetchMessages={fetchMessages}/>
+        </div>
         </>
     )
 }

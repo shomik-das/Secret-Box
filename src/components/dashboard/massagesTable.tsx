@@ -9,6 +9,7 @@ import { Badge } from "@/components/ui/badge"
 import { Star, Trash2, RefreshCcw, Search } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { toast } from "sonner"
+import { Skeleton } from "@/components/ui/skeleton"
 import {
   Dialog,
   DialogContent,
@@ -28,6 +29,7 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog"
 import { ClientMessage as Message } from "@/types/ClientMessage"
+import { on } from "events"
 
 
 type MessagesTableProps = {
@@ -39,7 +41,7 @@ type MessagesTableProps = {
 
 
 const  MessagesTable =( {messages, setMessages, isLoading, fetchMessages}: MessagesTableProps)=> {
-
+  const Loading = true;
   const [query, setQuery] = useState("")
   const [tab, setTab] = useState<"all" | "unread" | "starred">("all") // removed "hidden"
   const [open, setOpen] = useState(false)
@@ -87,7 +89,7 @@ const  MessagesTable =( {messages, setMessages, isLoading, fetchMessages}: Messa
             toast.error("Failed to toggle star")
             return
         }
-        toast.success("Star toggled successfully")
+        // toast.success("Star toggled successfully")
     }
     catch (err) {
         optimisticUpdate(m._id, { starred: oldStarred })
@@ -102,6 +104,7 @@ const  MessagesTable =( {messages, setMessages, isLoading, fetchMessages}: Messa
   }
 
   const onDelete = async (m: Message) => {
+    setOpen(false)
     const prevMessages = [...messages]
     setMessages((prev) => prev.filter((mes) => mes._id !== m._id))
     try {
@@ -154,6 +157,7 @@ const  MessagesTable =( {messages, setMessages, isLoading, fetchMessages}: Messa
     }
   }
 
+
   return (
     <div className="space-y-4">
       <div className="flex flex-col items-stretch gap-2 md:flex-row md:items-center md:justify-between">
@@ -183,18 +187,40 @@ const  MessagesTable =( {messages, setMessages, isLoading, fetchMessages}: Messa
         </div>
       </div>
 
-      <div className={cn("rounded-md border", isLoading && "opacity-60")}>
+      <div className={cn("rounded-md border")}>
         <Table>
           <TableHeader>
-            <TableRow>
-              <TableHead className="w-[80px]">Status</TableHead>
-              <TableHead>Message</TableHead>
-              <TableHead className="hidden md:table-cell">Received</TableHead>
-              <TableHead className="text-left">Actions</TableHead>
-            </TableRow>
-          </TableHeader>
+  <TableRow>
+    <TableHead className="w-[90px] text-center">Status</TableHead>
+    <TableHead className="flex-1">Message</TableHead>
+    <TableHead className="w-[180px] text-sm text-muted-foreground">Received</TableHead>
+    <TableHead className="w-[120px] text-left">Actions</TableHead>
+  </TableRow>
+</TableHeader>
+
           <TableBody>
-            {(filtered ?? []).map((m: Message) => (
+            {isLoading ? (
+              Array.from({ length: 5 }).map((_, i) => (
+              <TableRow key={i}>
+                <TableCell className="w-[90px]">
+                  <Skeleton className="h-5 w-16 mx-auto" />
+                </TableCell>
+                <TableCell className="flex-1">
+                  <Skeleton className="h-5 w-full" />
+                </TableCell>
+                <TableCell className="w-[180px] md:table-cell">
+                  <Skeleton className="h-5 w-32" />
+                </TableCell>
+                <TableCell className="w-[120px]">
+                  <div className="flex items-center justify-end gap-2">
+                    <Skeleton className="h-8 w-8 rounded-md" />
+                    <Skeleton className="h-8 w-8 rounded-md" />
+                  </div>
+                </TableCell>
+              </TableRow>
+              ))
+            ):
+            filtered && filtered.length > 0 ? (filtered.map((m: Message) => (
               <TableRow
                 key={m._id}
                 role="button"
@@ -208,7 +234,7 @@ const  MessagesTable =( {messages, setMessages, isLoading, fetchMessages}: Messa
                 }}
                 className={cn(m.read && "bg-accent/50", "cursor-pointer")}
               >
-                <TableCell className="align-top">
+                <TableCell className="w-[90px] text-center">
                   <div className="flex flex-col items-center justify-center">
                     {!m.read && (
                       <Badge className="w-fit" variant="default">
@@ -217,13 +243,13 @@ const  MessagesTable =( {messages, setMessages, isLoading, fetchMessages}: Messa
                     )}
                   </div>
                 </TableCell>
-                <TableCell className="align-top">
+                <TableCell className="flex-1 truncate">
                   <p className="text-pretty line-clamp-2">{m.content}</p>
                 </TableCell>
-                <TableCell className="hidden align-top text-sm text-muted-foreground md:table-cell">
+                <TableCell className=" md:table-cell w-[180px] text-sm text-muted-foreground">
                   {new Date(m.createdAt).toLocaleString()}
                 </TableCell>
-                <TableCell className="align-top">
+                <TableCell className="w-[120px]">
                   <div className="flex items-center justify-end gap-2">
                     <Button
                       size="icon"
@@ -250,8 +276,8 @@ const  MessagesTable =( {messages, setMessages, isLoading, fetchMessages}: Messa
                   </div>
                 </TableCell>
               </TableRow>
-            ))}
-            {filtered && filtered.length === 0 && !isLoading && (
+            ))):
+            (
               <TableRow>
                 <TableCell colSpan={4} className="py-10 text-center text-sm text-muted-foreground">
                   No messages to show.
@@ -277,14 +303,19 @@ const  MessagesTable =( {messages, setMessages, isLoading, fetchMessages}: Messa
             <Button
               variant="ghost"
               size="sm"
-              onClick={() => selected && onToggleStar(selected)}
+              onClick={() => {
+                if(selected){
+                  onToggleStar(selected)
+                  setSelected({ ...selected, starred: !selected.starred })
+                }
+              }}
               aria-label={selected?.starred ? "Unstar" : "Star"}
             >
               {selected?.starred ? <Star className="mr-2 h-4 w-4 fill-current" /> : <Star className="mr-2 h-4 w-4" />}
               {selected?.starred ? "Unstar" : "Star"}
             </Button>
             <Button
-              variant="secondary"
+              variant="ghost"
               size="sm"
               onClick={() => {
                 if (selected) requestDelete(selected)
@@ -293,9 +324,6 @@ const  MessagesTable =( {messages, setMessages, isLoading, fetchMessages}: Messa
             >
               <Trash2 className="mr-2 h-4 w-4" />
               Delete
-            </Button>
-            <Button size="sm" onClick={() => setOpen(false)}>
-              Close
             </Button>
           </DialogFooter>
         </DialogContent>

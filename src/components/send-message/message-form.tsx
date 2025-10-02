@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
 import { toast } from "sonner"
 import { Send } from "lucide-react"
+import { LoaderIcon, LoaderCircle } from "lucide-react"
 
 
 export function MessageForm({ username }: { username?: string }) {
@@ -16,6 +17,7 @@ export function MessageForm({ username }: { username?: string }) {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     try{
+        setIsSubmitting(true);
         const res = await fetch("/api/send-message", {
             method: "POST",
             headers: {
@@ -71,6 +73,7 @@ export function MessageForm({ username }: { username?: string }) {
         <Button type="submit" className="w-full shadow-lg" size="lg" disabled={isSubmitting || !message.trim()}>
           {isSubmitting ? (
             <>
+              <LoaderCircle className="mr-2 h-4 w-4 animate-spin" />
               <span className="animate-pulse">Sending...</span>
             </>
           ) : (

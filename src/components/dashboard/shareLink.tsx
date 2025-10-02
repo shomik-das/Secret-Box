@@ -8,17 +8,33 @@ import { Copy, LinkIcon, Check } from "lucide-react"
 import { toast } from "sonner"
 import { useSession } from "next-auth/react"
 import { User } from "next-auth"
+import { Skeleton } from "@/components/ui/skeleton"
 
 const shareLink = () => {
   const [copied, setCopied] = useState(false)
-  const {data: session} = useSession();
-  if(!session || !session.user){
-    return null;
+  const {data: session, status} = useSession();
+  const baseUrl = `${window.location.protocol}//${window.location.host}`
+
+  if (status === "loading") {
+    return (
+      <Card>
+        <CardHeader>
+          <Skeleton className="h-5 w-40" /> 
+          <Skeleton className="h-4 w-60 mt-2" />
+        </CardHeader>
+        <CardContent className="flex items-center gap-2">
+          <Skeleton className="h-9 w-9 rounded-md" />
+          <Skeleton className="h-9 flex-1" />
+          <Skeleton className="h-9 w-20 rounded-md" />
+        </CardContent>
+      </Card>
+    )
+  }
+  else if (status === "unauthenticated") {
+    return null
   }
   const {username} = session?.user as User;
-  const baseUrl = `${window.location.protocol}//${window.location.host}`
   const link = `${baseUrl}/u/${username}`
-
   async function onCopy() {
     try {
       await navigator.clipboard.writeText(link)
@@ -29,7 +45,6 @@ const shareLink = () => {
       toast.error("Failed to copy link")
     }
   }
-
   return (
     <Card>
       <CardHeader>
