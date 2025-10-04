@@ -1,6 +1,6 @@
 "use client"
 
-import { useMemo, useState } from "react"
+import { useMemo, useState, useCallback, useEffect} from "react"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
@@ -40,16 +40,17 @@ type MessagesTableProps = {
 }
 
 
-const  MessagesTable =( {messages, setMessages, isLoading, fetchMessages}: MessagesTableProps)=> {
-  const Loading = true;
+const  MessagesTable =( )=> {
   const [query, setQuery] = useState("")
   const [tab, setTab] = useState<"all" | "unread" | "starred">("all") // removed "hidden"
   const [open, setOpen] = useState(false)
   const [selected, setSelected] = useState<Message | null>(null)
   const [confirmOpen, setConfirmOpen] = useState(false)
   const [toDelete, setToDelete] = useState<Message | null>(null)
+  const [messages, setMessages] = useState<Message[]>([])
+  const [isMessageLoading, setIsMessageLoading] = useState(true)
 
-  const filtered = useMemo(() => {
+  const filtered = useMemo(() => { //todo why to user user memo here
     let list = messages
     if (tab === "unread") list = list.filter((m: Message) => !m.read)
     if (tab === "starred") list = list.filter((m: Message) => m.starred)
@@ -157,6 +158,41 @@ const  MessagesTable =( {messages, setMessages, isLoading, fetchMessages}: Messa
     }
   }
 
+    const fetchMessages = useCallback(async(refresh: boolean = false) =>{
+        try{
+            setIsMessageLoading(true)
+            const res = await fetch("/api/get-messages", {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            })
+            const data = await res.json()
+            console.log("data: ", data.data)
+            if(!data.success){
+                toast.error(data.message)
+                setMessages([])
+                return
+            }
+            if(refresh){
+                toast.success("Showing latest messages")
+            }
+            setMessages(data.data)
+        }
+        catch(err){
+            console.log(err, "Error fetching messages");
+            toast.error("Error getting messages")
+        }
+        finally{
+            setIsMessageLoading(false)
+        }
+        
+    },[setIsMessageLoading, setMessages])
+
+    useEffect(() =>{    
+      fetchMessages()
+    },[ fetchMessages])
+
 
   return (
     <div className="space-y-4">
@@ -199,7 +235,7 @@ const  MessagesTable =( {messages, setMessages, isLoading, fetchMessages}: Messa
 </TableHeader>
 
           <TableBody>
-            {isLoading ? (
+            {isMessageLoading ? (
               Array.from({ length: 5 }).map((_, i) => (
               <TableRow key={i}>
                 <TableCell className="w-[90px]">

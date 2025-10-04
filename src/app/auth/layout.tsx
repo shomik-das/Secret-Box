@@ -1,7 +1,11 @@
 import { Lock, User } from "lucide-react";
+import Navbar from "@/components/common/navbar";
+import Footer from "@/components/common/footer";
 
 export default function layout ({children}: {children: React.ReactNode}) {
   return (
+    <>
+    <Navbar/>
     <div className="min-h-[calc(100vh-4rem)] bg-gradient-to-br from-background via-card/50 to-background flex items-center justify-center">
       <div className="w-full grid lg:grid-cols-2 gap-8 items-center">
         {/* Left side - Welcome content */}
@@ -41,5 +45,7 @@ export default function layout ({children}: {children: React.ReactNode}) {
         </div>
       </div>
     </div>
+    <Footer/>
+    </>
   );
 }
