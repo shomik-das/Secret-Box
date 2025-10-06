@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -13,7 +13,18 @@ import { Skeleton } from "@/components/ui/skeleton"
 const shareLink = () => {
   const [copied, setCopied] = useState(false)
   const {data: session, status} = useSession();
-  const baseUrl = `${window.location.protocol}//${window.location.host}`
+  const [baseUrl, setBaseUrl] = useState("");
+
+  const username = session?.user?.username;
+  const link = `${baseUrl}/u/${username}`
+
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      setBaseUrl(`${window.location.protocol}//${window.location.host}`);
+    }
+  }, []);
+
 
   if (status === "loading") {
     return (
@@ -33,8 +44,7 @@ const shareLink = () => {
   else if (status === "unauthenticated") {
     return null
   }
-  const {username} = session?.user as User;
-  const link = `${baseUrl}/u/${username}`
+
   async function onCopy() {
     try {
       await navigator.clipboard.writeText(link)

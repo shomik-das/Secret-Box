@@ -61,7 +61,7 @@ export const options: NextAuthOptions = {
     ],
 
     callbacks: {
-        async jwt({ token, user }) {
+        async jwt({ token, user, trigger, session }) {
             if (user) {
                 token._id = user._id?.toString();
                 token.username = user.username;
@@ -70,6 +70,15 @@ export const options: NextAuthOptions = {
                 token.isAcceptingMessages = user.isAcceptingMessages;
                 token.image = user.image;
             }
+            if (trigger === "update" && session) {
+                token.username = session.user.username ?? token.username;
+                token.name = session.user.name ?? token.name;
+                token.image = session.user.image ?? token.image;
+                token.isAcceptingMessages = session.user.isAcceptingMessages ?? token.isAcceptingMessages;
+            }
+            // In session: { strategy: "jwt" } mode, there’s no database session store.
+            // So the session object you get on the frontend is derived entirely from your JWT token via your session() callback.
+            //      When you update the token → the session automatically updates next time it’s fetched.
             return token;
         },
         async session({ session, token }) {

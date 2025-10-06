@@ -53,7 +53,7 @@ export async function GET(request: Request) {
             createdAt: msg.createdAt.toISOString(),
             read: msg.read,
             starred: msg.starred
-        })) as ClientMessage[];
+        })) as ClientMessage[]; //todo need to study this more
 
         return new Response(JSON.stringify({
             success: true,

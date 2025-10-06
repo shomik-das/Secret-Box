@@ -34,6 +34,7 @@ import {
   Sun,
 } from 'lucide-react';
 import { Skeleton } from '@/components/ui/skeleton';
+import { usePathname } from 'next/navigation';
 
 const menuItems = [
   { title: 'Overview', icon: Home, href: "/user-dashboard/overview" },
@@ -41,7 +42,7 @@ const menuItems = [
   { title: 'Share Link', icon: Link2, href: '/user-dashboard/share-link' },
   { title: 'Profile', icon: UserIcon, href: '/user-dashboard/profile' },
   { title: 'Notifications', icon: Bell, href: '/user-dashboard/notifications' },
-  { title: 'Sender Controls', icon: Settings2, href: '/user-dashboard/sender-control' },
+  { title: 'Settings', icon: Settings, href: '/user-dashboard/sender-control' },
 ];
 
 export function SidebarHeaderSkeleton() {
@@ -66,6 +67,8 @@ export const AdminSidebar = memo(() => {
   const { theme, setTheme } = useTheme();
   const { data: session, status } = useSession()
   const user: User = session?.user
+  const pathname = usePathname();
+
 
   return (
     <Sidebar collapsible="icon">
@@ -76,7 +79,7 @@ export const AdminSidebar = memo(() => {
             <SidebarMenuButton size="lg">
                 <Avatar className='rounded-md overflow-hidden'>
                   <AvatarImage src={user?.image} alt="Profile image" className='rounded-md object-cover'/>
-                  <AvatarFallback>user?.username[0].toUpperCase() || 'U'</AvatarFallback>
+                  <AvatarFallback>'U'</AvatarFallback>
                 </Avatar>
                 <div className="grid flex-1 text-left text-sm leading-tight">
                   <span className="truncate font-semibold text-sm">{user?.name}</span>
@@ -97,9 +100,10 @@ export const AdminSidebar = memo(() => {
             <SidebarMenu>
               {menuItems.map((item) => {
                 const Icon = item.icon;
+                const isActive = pathname === item.href;
                 return (
                   <SidebarMenuItem key={item.href}>
-                    <SidebarMenuButton asChild>
+                    <SidebarMenuButton asChild className={isActive ? 'bg-[#f4f4f5]' : ''}>
                       <Link prefetch={false} href={item.href}>
                         <Icon />
                         <span>{item.title}</span>

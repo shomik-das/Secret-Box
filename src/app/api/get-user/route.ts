@@ -1,5 +1,4 @@
 import dbConnection from "@/lib/dbConnection";
-import Message from "@/model/Message";
 import { NextResponse } from "next/server";
 import User from "@/model/User";
 

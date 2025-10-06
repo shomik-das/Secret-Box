@@ -28,6 +28,7 @@ const signup = () => {
 
   const form = useForm({
     resolver: zodResolver(signUpSchema),
+    mode: "onChange", //can remove this
     defaultValues: {
       username: "",
       email: "",
@@ -41,10 +42,10 @@ const signup = () => {
         setUsernameMessage("")
         return
       }
-      if (username.length < 3) {
-        setUsernameMessage("Username must be at least 3 characters")
-        return
-      }
+      // if (username.length < 3) {
+      //   setUsernameMessage("Username must be at least 3 characters")
+      //   return
+      // }
       try {
         setIsCheckingUsername(true)
         setUsernameMessage("")
@@ -123,11 +124,7 @@ const signup = () => {
                     <>
                       {isCheckingUsername && <Loader2 className="animate-spin h-4 w-4" />}
                       {!isCheckingUsername && usernameMessage && (
-                        <p className={`text-sm ${usernameMessage === "Username is available"
-                              ? "text-green-500"
-                              : "text-red-500"
-                          }`}
-                        >
+                        <p className={`text-sm ${usernameMessage === "Username is available"? "text-green-500": "text-red-500"}`}>
                           {usernameMessage}
                         </p>
                       )}

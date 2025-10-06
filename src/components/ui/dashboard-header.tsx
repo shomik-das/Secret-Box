@@ -1,7 +1,7 @@
 'use client';
 
 import { memo } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { SidebarTrigger } from '@/components/ui/sidebar';
@@ -33,8 +33,8 @@ interface DashboardHeaderProps {
   searchQuery: string;
   onSearchChange: (value: string) => void;
   onRefresh: () => void;
-  onExport: () => void;
   isRefreshing: boolean;
+  showActions?: boolean;
 }
 
 export const DashboardHeader = memo(
@@ -42,8 +42,8 @@ export const DashboardHeader = memo(
     searchQuery,
     onSearchChange,
     onRefresh,
-    onExport,
     isRefreshing,
+    showActions,
   }: DashboardHeaderProps) => {
     return (
       <header className="bg-background/95 sticky top-0 z-50 flex h-16 w-full shrink-0 items-center gap-2 border-b backdrop-blur transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">
@@ -60,12 +60,18 @@ export const DashboardHeader = memo(
         </div>
 
         <div className="ml-auto flex items-center gap-2 px-4">
+          <AnimatePresence>
+          {showActions && (
           <motion.div
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: 20 }}
+            transition={{ delay: 0.1 }}
+            style={{ minWidth: 0 }} 
             className="flex items-center gap-2"
           >
-            {/* Search Input - Hide on Mobile */}
+              
+              {/* Search Input - Hide on Mobile */}
             <div className="relative hidden md:block">
               <Search className="text-muted-foreground absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 transform" />
               <Input
@@ -75,19 +81,12 @@ export const DashboardHeader = memo(
                 className="w-64 pl-10"
               />
             </div>
-
-            {/* Desktop Actions */}
-            <div className="hidden items-center gap-2 md:flex">
+              {/* Desktop Actions */}
+              <div className="hidden items-center gap-2 md:flex">
               <Button variant="outline" size="sm">
                 <Filter className="mr-2 h-4 w-4" />
                 Filter
               </Button>
-
-              <Button variant="outline" size="sm" onClick={onExport}>
-                <Download className="mr-2 h-4 w-4" />
-                Export
-              </Button>
-
               <Button
                 variant="outline"
                 size="sm"
@@ -117,21 +116,18 @@ export const DashboardHeader = memo(
                   <Filter className="mr-2 h-4 w-4" />
                   Filter
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={onExport}>
-                  <Download className="mr-2 h-4 w-4" />
-                  Export
-                </DropdownMenuItem>
                 <DropdownMenuItem onClick={onRefresh}>
                   <RefreshCw className="mr-2 h-4 w-4" />
                   Refresh
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
-
-            <Button variant="outline" size="sm">
-              <Bell className="h-4 w-4" />
-            </Button>
           </motion.div>
+          )}
+          </AnimatePresence>
+          <Button variant="outline" size="sm">
+              <Bell className="h-4 w-4" />
+          </Button>
         </div>
       </header>
     );
