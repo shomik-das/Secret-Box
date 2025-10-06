@@ -41,7 +41,6 @@ const menuItems = [
   { title: 'Messages', icon: Inbox, href: '/user-dashboard/messages' },
   { title: 'Share Link', icon: Link2, href: '/user-dashboard/share-link' },
   { title: 'Profile', icon: UserIcon, href: '/user-dashboard/profile' },
-  { title: 'Notifications', icon: Bell, href: '/user-dashboard/notifications' },
   { title: 'Settings', icon: Settings, href: '/user-dashboard/sender-control' },
 ];
 

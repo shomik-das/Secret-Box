@@ -29,37 +29,33 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog"
 import { ClientMessage as Message } from "@/types/ClientMessage"
-import { on } from "events"
 
 
 type MessagesTableProps = {
   messages: Message[]
   setMessages: React.Dispatch<React.SetStateAction<Message[]>>;
   isLoading: boolean
-  fetchMessages: (refresh?: boolean) => Promise<void>
+  searchQuery: string
 }
 
 
-const  MessagesTable =( )=> {
-  const [query, setQuery] = useState("")
+const  MessagesTable =({messages, setMessages, isLoading, searchQuery} : MessagesTableProps)=> {
   const [tab, setTab] = useState<"all" | "unread" | "starred">("all") // removed "hidden"
   const [open, setOpen] = useState(false)
   const [selected, setSelected] = useState<Message | null>(null)
   const [confirmOpen, setConfirmOpen] = useState(false)
   const [toDelete, setToDelete] = useState<Message | null>(null)
-  const [messages, setMessages] = useState<Message[]>([])
-  const [isMessageLoading, setIsMessageLoading] = useState(true)
 
   const filtered = useMemo(() => { //todo why to user user memo here
     let list = messages
     if (tab === "unread") list = list.filter((m: Message) => !m.read)
     if (tab === "starred") list = list.filter((m: Message) => m.starred)
-    if (query.trim()) {
-      const q = query.toLowerCase()
+    if (searchQuery.trim()) {
+      const q = searchQuery.toLowerCase()
       list = list.filter((m: Message) => m.content.toLowerCase().includes(q))
     }
     return list
-  },[ messages, tab, query])
+  },[ messages, tab, searchQuery])
 
   const optimisticUpdate = (id: string, patch: Partial<Message>) => {
     setMessages((prev) =>
@@ -158,41 +154,6 @@ const  MessagesTable =( )=> {
     }
   }
 
-    const fetchMessages = useCallback(async(refresh: boolean = false) =>{
-        try{
-            setIsMessageLoading(true)
-            const res = await fetch("/api/get-messages", {
-                method: "GET",
-                headers: {
-                    "Content-Type": "application/json"
-                }
-            })
-            const data = await res.json()
-            console.log("data: ", data.data)
-            if(!data.success){
-                toast.error(data.message)
-                setMessages([])
-                return
-            }
-            if(refresh){
-                toast.success("Showing latest messages")
-            }
-            setMessages(data.data)
-        }
-        catch(err){
-            console.log(err, "Error fetching messages");
-            toast.error("Error getting messages")
-        }
-        finally{
-            setIsMessageLoading(false)
-        }
-        
-    },[setIsMessageLoading, setMessages])
-
-    useEffect(() =>{    
-      fetchMessages()
-    },[ fetchMessages])
-
 
   return (
     <div className="space-y-4">
@@ -204,23 +165,6 @@ const  MessagesTable =( )=> {
             <TabsTrigger value="starred">Starred</TabsTrigger>
           </TabsList>
         </Tabs>
-
-        <div className="flex w-full items-center gap-2 md:w-80">
-          <div className="relative w-full">
-            <Search className="pointer-events-none absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
-            <Input
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              placeholder="Search messages"
-              aria-label="Search messages"
-              className="pl-8"
-            />
-          </div>
-          <Button variant="secondary" aria-label="Refresh messages" onClick={() => fetchMessages(true)}>
-            <RefreshCcw className="mr-2 h-4 w-4" />
-            Refresh
-          </Button>
-        </div>
       </div>
 
       <div className={cn("rounded-md border")}>
@@ -235,7 +179,7 @@ const  MessagesTable =( )=> {
 </TableHeader>
 
           <TableBody>
-            {isMessageLoading ? (
+            {isLoading ? (
               Array.from({ length: 5 }).map((_, i) => (
               <TableRow key={i}>
                 <TableCell className="w-[90px]">
