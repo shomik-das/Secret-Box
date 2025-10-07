@@ -16,7 +16,7 @@ import { useSession } from "next-auth/react"
 import { User } from "next-auth"
 import { Spinner } from "../ui/spinner"
 import { profileSchema } from "@/schema/profileSchema"
-import { ProfileSkeleton } from "./ProfileSkeleton"
+import { ProfileSkeleton } from "./skeletons/profileFormSkeleton"
 
 
 type ProfileFormType = z.infer<typeof profileSchema>
