@@ -5,9 +5,8 @@ import Footer from "@/components/common/footer";
 export default function layout ({children}: {children: React.ReactNode}) {
   return (
     <>
-    <Navbar/>
-    <div className="min-h-[calc(100vh-4rem)] from-background via-card/50 to-background flex items-center justify-center max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20">
-      <div className="w-full grid lg:grid-cols-2 gap-8 items-center">
+    <div className="min-h-[calc(100vh-4rem)] from-background via-card/50 to-background flex items-center justify-center max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-2">
+      <div className="w-full grid lg:grid-cols-2 gap-8 items-center transition-height">
         {/* Left side - Welcome content */}
         <div className="hidden lg:flex flex-col justify-center space-y-6 px-8">
           <div className="space-y-4">
@@ -45,7 +44,6 @@ export default function layout ({children}: {children: React.ReactNode}) {
         </div>
       </div>
     </div>
-    <Footer/>
     </>
   );
 }

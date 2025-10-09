@@ -32,7 +32,7 @@ export default function UserMenu({ user }: { user?: User }) {
         <Button variant="ghost" className="h-auto p-0 hover:bg-transparent">
           <Avatar>
             <AvatarImage src={user?.image} alt="Profile image" />
-            <AvatarFallback>user?.username[0].toUpperCase()</AvatarFallback>
+            <AvatarFallback>U</AvatarFallback>
           </Avatar>
         </Button>
       </DropdownMenuTrigger>

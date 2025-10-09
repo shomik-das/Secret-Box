@@ -27,14 +27,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <ThemeProvider>
-      <AuthProvider>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-            {children}
-        <Toaster />
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+          <AuthProvider>
+              {children}
+            <Toaster />
+          </AuthProvider>
+        </ThemeProvider>
       </body>
-      </AuthProvider>
-      </ThemeProvider>
     </html>
   );
 }
