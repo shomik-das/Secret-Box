@@ -99,10 +99,9 @@ export const AdminSidebar = memo(() => {
             <SidebarMenu>
               {menuItems.map((item) => {
                 const Icon = item.icon;
-                const isActive = pathname === item.href;
                 return (
                   <SidebarMenuItem key={item.href}>
-                    <SidebarMenuButton asChild className={isActive ? 'bg-[#f4f4f5]' : ''}>
+                    <SidebarMenuButton asChild>
                       <Link prefetch={false} href={item.href}>
                         <Icon />
                         <span>{item.title}</span>
