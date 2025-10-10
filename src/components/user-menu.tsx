@@ -24,16 +24,18 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { User } from "next-auth"
 import { signOut } from "next-auth/react"
+import { ChevronDownIcon } from "lucide-react"
 
 export default function UserMenu({ user }: { user?: User }) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" className="h-auto p-0 hover:bg-transparent">
+        <Button variant="ghost" className="h-auto p-0 !hover:bg-transparent !bg-transparent focus-visible:ring-0 focus-visible:outline-none focus-visible:ring-offset-0">
           <Avatar>
             <AvatarImage src={user?.image} alt="Profile image" />
             <AvatarFallback>U</AvatarFallback>
           </Avatar>
+          <ChevronDownIcon size={16} className="opacity-60" aria-hidden="true" />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="max-w-64" align="end">

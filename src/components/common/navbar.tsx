@@ -5,7 +5,7 @@ import Link from "next/link"
 import { useSession, signOut } from "next-auth/react"
 import { User } from "next-auth"
 import UserMenu from "@/components/user-menu"
-import Logo from "@/components/logo"
+import {Logo} from "@/components/logo"
 import NotificationMenu from "@//components/notification-menu"
 import { Button } from "@/components/ui/button"
 import {
@@ -15,6 +15,7 @@ import {
   NavigationMenuList,
 } from "@/components/ui/navigation-menu"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
+import ToggleTheme from "./toggleTheme"
 
 const navigationLinks = [
   { href: "/", label: "Home" },
@@ -30,9 +31,9 @@ export default function Navbar() {
 
   return (
     <header className="sticky top-0 z-40 w-full bg-background/80 backdrop-blur border-b ">
-      <div className="flex h-16 items-center justify-between gap-4 mx-auto max-w-7xl px-4 md:px-6">
+      <div className="flex h-16 items-center justify-between gap-4 mx-auto max-w-5xl px-4 md:px-6">
         {/* Left side */}
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-8">
           {/* Mobile menu */}
           <Popover>
             <PopoverTrigger asChild>
@@ -69,8 +70,12 @@ export default function Navbar() {
           </Popover>
 
           {/* Logo */}
-          <Link href="#" className="text-primary hover:text-primary/90">
-            <Logo />
+          <Link href="#" className="text-primary hover:text-primary/90 ">
+            <span
+            className="font-semibold text-xl text-primary"
+            >
+              SECRET BOX
+            </span>
           </Link>
 
           {/* Desktop navigation */}
@@ -91,7 +96,12 @@ export default function Navbar() {
         </div>
 
         {/* Right side */}
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-2">
+          {/* Theme toggle */}
+          <div className="flex items-center gap-2">
+            <ToggleTheme />
+          </div>
+          {/* Notification */}
           <div className="flex items-center gap-2">
             <NotificationMenu />
           </div>
@@ -104,7 +114,6 @@ export default function Navbar() {
               <div className="">
                 <UserMenu user={user}/>
               </div>
-
               </>
             ) }
         </div>
