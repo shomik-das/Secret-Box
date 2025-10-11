@@ -1,11 +1,12 @@
 import React from 'react'
 import Link from 'next/link'
-import { ChevronRight } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import Image from 'next/image'
 import { TextEffect } from '@/components/ui/text-effect'
 import { AnimatedGroup } from '@/components/ui/animated-group'
-import { Lock, Shield, ArrowRight } from 'lucide-react'
+import { ArrowRight } from 'lucide-react'
+import { FlipWords } from '../ui/flip-words'
+import { WordRotate } from '../ui/word-rotate'
 
 
 const transitionVariants = {
@@ -29,6 +30,7 @@ const transitionVariants = {
 }
 
 export default function HeroSection() {
+    const words: string[] = ["Send", "Receive", "Share"];
     return (
         <>
             <main className="overflow-hidden">
@@ -37,14 +39,14 @@ export default function HeroSection() {
                 <section>
                     <div className="relative">
                         <div className="absolute inset-0 -z-10 size-full"></div>
-                        <div className="mx-auto max-w-5xl px-6">
+                        <div className="mx-auto max-w-6xl px-6">
                             <div className="sm:mx-auto lg:mr-auto lg:mt-0">
                                 <TextEffect
                                     preset="fade-in-blur"
                                     speedSegment={0.3}
                                     as="h1"
-                                    className="mt-8 max-w-2xl text-balance text-5xl font-medium md:text-6xl lg:mt-16">
-                                    Receive and Send anonymous messages
+                                    className="mt-8 max-w-2xl text-balance text-5xl font-bold md:text-6xl lg:mt-16">
+                                    Send and Receive anonymous messages
                                 </TextEffect>
                                 <TextEffect
                                     per="line"
@@ -71,7 +73,7 @@ export default function HeroSection() {
                                         <Button
                                             key={1}
                                             size="lg"
-                                            className="text-base font-semibold h-12 px-8 shadow-lg shadow-primary/25 hover:shadow-xl hover:shadow-primary/30 transition-all"
+                                            className="text-base font-semibold h-12 px-8 shadow-lg shadow-primary/25 hover:shadow-xl hover:shadow-primary/30 transition-all group"
                                             asChild
                                         >
                                             <Link href="/auth/signin-signup" >
@@ -109,24 +111,43 @@ export default function HeroSection() {
                                 },
                                 ...transitionVariants,
                             }}>
-                            <div className="mask-b-from-55% relative -mr-56 mt-8 overflow-hidden px-2 sm:mr-0 sm:mt-12 md:mt-20">
+                            {/* <div className="mask-b-from-55% relative -mr-56 mt-8 overflow-hidden px-2 sm:mr-0 sm:mt-12 md:mt-20">
                                 <div className="inset-shadow-2xs ring-background dark:inset-shadow-white/20 bg-background relative mx-auto max-w-5xl overflow-hidden rounded-2xl border p-4 shadow-lg shadow-zinc-950/15 ring-1">
                                     <Image
                                         className="bg-background aspect-15/8 relative hidden rounded-2xl dark:block"
-                                        src="/mail2.png"
+                                        src="/demo.jpg"
                                         alt="app screen"
                                         width="2700"
                                         height="1440"
                                     />
                                     <Image
                                         className="z-2 border-border/25 aspect-15/8 relative rounded-2xl border dark:hidden"
-                                        src="/mail2-light.png"
+                                        src="/demo.jpg"
+                                        alt="app screen"
+                                        width="2700"
+                                        height="1440"
+                                    />
+                                </div>
+                            </div> */}
+                            <div className="mask-b-from-55% relative -mr-56 mt-8 overflow-hidden px-2 sm:mr-0 sm:mt-12 md:mt-20">
+                                <div className="inset-shadow-2xs ring-background dark:inset-shadow-white/20 bg-background relative mx-auto max-w-6xl overflow-hidden rounded-2xl border p-4 shadow-lg shadow-zinc-950/15 ring-1">
+                                    <Image
+                                        className="bg-background aspect-15/8 relative hidden rounded-2xl dark:block"
+                                        src="/demo.jpg"
+                                        alt="app screen"
+                                        width="2700"
+                                        height="1440"
+                                    />
+                                    <Image
+                                        className="z-2 border-border/25 aspect-15/8 relative rounded-2xl border dark:hidden"
+                                        src="/demo.jpg"
                                         alt="app screen"
                                         width="2700"
                                         height="1440"
                                     />
                                 </div>
                             </div>
+                            
                         </AnimatedGroup>
                     </div>
                 </section>

@@ -1,7 +1,7 @@
 import FeaturesSection from "@/components/home/features";
 import HeroSection from "@/components/home/hero-section";
-import {MarqueeDemo} from "@/components/home/marquee-demo";
 import MessageCarousel from "@/components/home/message-carousal";
+import { CTASection } from "@/components/home/cta-section";
 
 
 export default function Home() {
@@ -10,6 +10,7 @@ export default function Home() {
       <HeroSection />
       <MessageCarousel />
       <FeaturesSection />
+      <CTASection />
     </>
   );
 }

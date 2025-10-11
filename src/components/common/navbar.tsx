@@ -31,7 +31,7 @@ export default function Navbar() {
 
   return (
     <header className="sticky top-0 z-40 w-full bg-background/80 backdrop-blur border-b ">
-      <div className="flex h-16 items-center justify-between gap-4 mx-auto max-w-5xl px-4 md:px-6">
+      <div className="flex h-16 items-center justify-between gap-4 mx-auto max-w-6xl px-4 md:px-6">
         {/* Left side */}
         <div className="flex items-center gap-8">
           {/* Mobile menu */}

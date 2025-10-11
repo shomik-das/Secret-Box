@@ -4,36 +4,65 @@ import Image from 'next/image'
 export default function FeaturesSection() {
     return (
         <section className="pt-16 md:pt-32">
-            <div className="mx-auto max-w-5xl space-y-12 px-6">
-                <div className="relative z-10 grid items-center gap-4 md:grid-cols-2 md:gap-12">
-                    <h2 className="text-4xl font-semibold">Everything you need for anonymous messaging</h2>
-                    <p className="max-w-sm sm:ml-auto">Built with privacy and security at its core, Secret Box gives you complete control over your anonymous messages</p>
+            <div className="mx-auto max-w-6xl space-y-12 px-6">
+                <div className="relative z-10 max-w-2xl">
+                    <h2 className="text-4xl font-bold lg:text-5xl">Why Choose Secret Box</h2>
+                    <p className="mt-6 text-lg">Built with privacy and security at its core, Secret Box gives you complete control over your anonymous messages</p>
                 </div>
-                <div className="px-3 pt-3 md:-mx-8">
-                    <div className="aspect-88/36 mask-b-from-75% mask-b-to-95% relative">
-                        <Image
-                            src="/mail-upper.png"
-                            className="absolute inset-0 z-10"
-                            alt="payments illustration dark"
-                            width={2797}
-                            height={1137}
-                        />
-                        <Image
-                            src="/mail-back.png"
-                            className="hidden dark:block"
-                            alt="payments illustration dark"
-                            width={2797}
-                            height={1137}
-                        />
-                        <Image
-                            src="/mail-back-light.png"
-                            className="dark:hidden"
-                            alt="payments illustration light"
-                            width={2797}
-                            height={1137}
-                        />
+                <div className="px-3 pt-3 md:-mx-8 flex justify-center">
+                    <div className="aspect-88/36 mask-b-from-75% mask-b-to-95% relative max-w-5xl w-full">
+                    <Image
+                        src="/demo.jpg"
+                        className="absolute inset-0 z-10 rounded-2xl"
+                        alt="payments illustration dark"
+                        width={2797}
+                        height={1137}
+                    />
+                    <Image
+                        src="/demo.jpg"
+                        className="hidden dark:block rounded-2xl"
+                        alt="payments illustration dark"
+                        width={2797}
+                        height={1137}
+                    />
+                    <Image
+                        src="/demo.jpg"
+                        className="dark:hidden rounded-2xl"
+                        alt="payments illustration light"
+                        width={2797}
+                        height={1137}
+                    />
                     </div>
                 </div>
+                {/* <div className="mask-b-from-75% mask-l-from-75% mask-b-to-95% mask-l-to-95% relative -mx-4 pr-3 pt-3 md:-mx-12">
+                    <div className="perspective-midrange">
+                        <div className="rotate-x-6 -skew-2">
+                            <div className="aspect-88/36 relative">
+                                <Image
+                                    src="/demo.jpg"
+                                    className="absolute inset-0 z-10 rounded-2xl"
+                                    alt="payments illustration dark"
+                                    width={2797}
+                                    height={1137}
+                                />
+                                <Image
+                                    src="/demo.jpg"
+                                    className="hidden dark:block rounded-2xl"
+                                    alt="payments illustration dark"
+                                    width={2797}
+                                    height={1137}
+                                />
+                                <Image
+                                    src="/demo.jpg"
+                                    className="dark:hidden rounded-2xl"
+                                    alt="payments illustration light"
+                                    width={2797}
+                                    height={1137}
+                                />
+                            </div>
+                        </div>
+                    </div>
+                </div> */}
                 <div className="relative mx-auto grid grid-cols-2 gap-x-3 gap-y-6 sm:gap-8 lg:grid-cols-4">
                     <div className="space-y-2">
                         <div className="flex items-center gap-2">

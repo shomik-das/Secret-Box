@@ -1,42 +1,55 @@
 import { cn } from "@/lib/utils"
 import { Marquee } from "../ui/marquee"
+import { UserIcon } from "lucide-react" 
 
 const reviews = [
   {
-    name: "Jack",
-    username: "@jack",
-    body: "I've never seen anything like this before. It's amazing. I love it.",
-    img: "https://avatar.vercel.sh/jack",
+    body: "Sometimes I replay our old chats just to feel that same energy again.",
   },
   {
-    name: "Jill",
-    username: "@jill",
-    body: "I don't know what to say. I'm speechless. This is amazing.",
-    img: "https://avatar.vercel.sh/jill",
+    body: "I act chill around you, but my heart races every single time.",
   },
   {
-    name: "John",
-    username: "@john",
-    body: "I'm at a loss for words. This is amazing. I love it.",
-    img: "https://avatar.vercel.sh/john",
+    body: "You have no idea how many times I typed a message to you and deleted it.",
   },
   {
-    name: "Jane",
-    username: "@jane",
-    body: "I'm at a loss for words. This is amazing. I love it.",
-    img: "https://avatar.vercel.sh/jane",
+    body: "You looked really good yesterday… like unfairly good",
   },
   {
-    name: "Jenny",
-    username: "@jenny",
-    body: "I'm at a loss for words. This is amazing. I love it.",
-    img: "https://avatar.vercel.sh/jenny",
+    body: "I still remember that one random compliment you gave me months ago.",
   },
   {
-    name: "James",
-    username: "@james",
-    body: "I'm at a loss for words. This is amazing. I love it.",
-    img: "https://avatar.vercel.sh/james",
+    body: "You make me nervous in the best way possible.",
+  },
+  {
+    body: "You’re the reason my playlist went from chill to heartbreak mode",
+  },
+  {
+    body: "I pretend I don’t care, but you cross my mind way too often.",
+  },
+  {
+    body: "If only you knew how many screenshots I’ve taken of our conversations",
+  },
+  {
+    body: "I once skipped a whole plan just because you weren’t coming.",
+  },
+  {
+    body: "Sometimes I open your profile just to check if you’ve posted anything new.",
+  },
+  {
+    body: "I know we don’t talk much anymore, but I still care more than I should.",
+  },
+  {
+    body: "I wish I could tell you how I really feel… but this is safer",
+  },
+  {
+    body: "Every time you text first, it makes my whole day.",
+  },
+  {
+    body: "I still remember the first time we met — you were chaos, but good chaos.",
+  },
+  {
+    body: "If only you knew how often I talk about you without saying your name.",
   },
 ]
 
@@ -44,14 +57,8 @@ const firstRow = reviews.slice(0, reviews.length / 2)
 const secondRow = reviews.slice(reviews.length / 2)
 
 const ReviewCard = ({
-  img,
-  name,
-  username,
   body,
 }: {
-  img: string
-  name: string
-  username: string
   body: string
 }) => {
   return (
@@ -65,12 +72,13 @@ const ReviewCard = ({
       )}
     >
       <div className="flex flex-row items-center gap-2">
-        <img className="rounded-full" width="32" height="32" alt="" src={img} />
+        <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gray-200 dark:bg-gray-700">
+          <UserIcon className="h-4 w-4 text-gray-600 dark:text-gray-300" />
+        </div>
         <div className="flex flex-col">
           <figcaption className="text-sm font-medium dark:text-white">
-            {name}
+            Anonymous
           </figcaption>
-          <p className="text-xs font-medium dark:text-white/40">{username}</p>
         </div>
       </div>
       <blockquote className="mt-2 text-sm">{body}</blockquote>
@@ -82,18 +90,18 @@ export function MarqueeDemo() {
   return (
     <div className="relative flex w-full flex-col items-center justify-center overflow-hidden">
       <Marquee pauseOnHover className="[--duration:30s]">
-        {firstRow.map((review) => (
-          <ReviewCard key={review.username} {...review} />
+        {firstRow.map((review, index) => (
+          <ReviewCard key={index} {...review} />
         ))}
       </Marquee>
       <Marquee reverse pauseOnHover className="[--duration:30s]">
-        {secondRow.map((review) => (
-          <ReviewCard key={review.username} {...review} />
+        {secondRow.map((review, index) => (
+          <ReviewCard key={index} {...review} />
         ))}
       </Marquee>
       <Marquee pauseOnHover className="[--duration:30s]">
-        {firstRow.map((review) => (
-          <ReviewCard key={review.username} {...review} />
+        {firstRow.map((review, index) => (
+          <ReviewCard key={index} {...review} />
         ))}
       </Marquee>
       <div className="from-background pointer-events-none absolute inset-y-0 left-0 w-1/4 bg-gradient-to-r"></div>
