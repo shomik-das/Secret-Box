@@ -46,7 +46,7 @@ const page = () =>{
 
   return (
     <>
-    <div className="min-h-[calc(100vh-4rem)] max-w-7xl mx-auto pt-8">
+    <div className="min-h-[calc(100vh-4rem)] max-w-6xl mx-auto pt-8">
       <div className="mx-auto max-w-7xl">
         <div className="space-y-12">
           {isLoading? (

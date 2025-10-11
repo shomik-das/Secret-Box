@@ -44,7 +44,7 @@ export default function signin() {
         return
       }
       if(res?.ok){
-        router.push("/dashboard")
+        router.push("/user-dashboard/messages")
       }
     }
     catch(err){

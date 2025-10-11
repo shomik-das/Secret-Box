@@ -37,7 +37,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { usePathname } from 'next/navigation';
 
 const menuItems = [
-  { title: 'Overview', icon: Home, href: "/user-dashboard/overview" },
+  { title: 'Overview', icon: Home, href: "#" },
   { title: 'Messages', icon: Inbox, href: '/user-dashboard/messages' },
   { title: 'Share Link', icon: Link2, href: '/user-dashboard/share-link' },
   { title: 'Profile', icon: UserIcon, href: '/user-dashboard/profile' },
@@ -45,6 +45,7 @@ const menuItems = [
 ];
 
 export function SidebarHeaderSkeleton() {
+
   return (
     <SidebarHeader>
       <SidebarMenu>
@@ -99,9 +100,10 @@ export const AdminSidebar = memo(() => {
             <SidebarMenu>
               {menuItems.map((item) => {
                 const Icon = item.icon;
+                const isActive = pathname === item.href;
                 return (
                   <SidebarMenuItem key={item.href}>
-                    <SidebarMenuButton asChild>
+                    <SidebarMenuButton asChild className= {`${isActive? 'bg-primary/90 text-primary-foreground hover:bg-primary/90 hover:text-primary-foreground' : ''}`}>
                       <Link prefetch={false} href={item.href}>
                         <Icon />
                         <span>{item.title}</span>

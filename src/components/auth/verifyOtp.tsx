@@ -60,7 +60,7 @@ export default function verifyOtp() {
         return
       }
       else if (signInRes?.ok) {
-        router.push("/dashboard")
+        router.push("/user-dashboard/messages")
       }
       router.push("/auth/signin-signup");
     } catch (error) {
