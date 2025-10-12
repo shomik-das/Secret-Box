@@ -19,7 +19,7 @@ import { signIn } from "next-auth/react"
 import { useRouter } from "next/navigation"
 import { Spinner } from "../ui/spinner"
 
-const signup = () => {
+const Signup = () => {
   const [username, setUsername] = useState("")
   const [usernameMessage, setUsernameMessage] = useState("")
   const [isCheckingUsername, setIsCheckingUsername] = useState(false)
@@ -205,4 +205,4 @@ const signup = () => {
   )
 }
 
-export default signup
+export default Signup

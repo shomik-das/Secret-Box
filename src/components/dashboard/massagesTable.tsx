@@ -158,7 +158,7 @@ const  MessagesTable =({messages, setMessages, isLoading, searchQuery} : Message
   return (
     <div className="space-y-4">
       <div className="flex flex-col items-stretch gap-2 md:flex-row md:items-center md:justify-between">
-        <Tabs value={tab} onValueChange={(v: any) => setTab(v as typeof tab)} className="w-full md:w-auto">
+        <Tabs value={tab} onValueChange={(v) => setTab(v as "all" | "unread" | "starred")} className="w-full md:w-auto">
           <TabsList>
             <TabsTrigger value="all">All</TabsTrigger>
             <TabsTrigger value="unread">Unread</TabsTrigger>
@@ -206,7 +206,7 @@ const  MessagesTable =({messages, setMessages, isLoading, searchQuery} : Message
                 role="button"
                 tabIndex={0}
                 onClick={() => openMessage(m)}
-                onKeyDown={(e: any) => {
+                onKeyDown={(e: React.KeyboardEvent<HTMLTableRowElement>) => {
                   if (e.key === "Enter" || e.key === " ") {
                     e.preventDefault()
                     openMessage(m)

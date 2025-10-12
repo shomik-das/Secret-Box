@@ -12,7 +12,7 @@ import { useRouter } from "next/navigation"
 import { toast } from "sonner"
 import { Spinner } from "../ui/spinner"
 
-const  sendOtp = () => {
+const  SendOtp = () => {
   const [email, setEmail] = useState("")
   const [isLoading, setIsLoading] = useState(false)
   const router = useRouter();
@@ -72,7 +72,7 @@ const  sendOtp = () => {
           </div>
 
           <Button type="submit" className="w-full cursor-pointer" size="lg" disabled={isLoading}>
-            {isLoading ? (<> <Spinner/> "Sending"  </>) : (<> "Send Code" </>)}
+            {isLoading ? (<> <Spinner/> <span> Sending </span> </>) : (<> <span> Send Code  </span> </>)}
           </Button>
         </form>
 
@@ -84,5 +84,5 @@ const  sendOtp = () => {
   )
 }
 
-export default sendOtp;
+export default SendOtp;
 

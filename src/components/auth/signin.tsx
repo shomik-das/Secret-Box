@@ -19,7 +19,7 @@ import { FaGithub } from "react-icons/fa"; // GitHub icon
 import Link from "next/link";
 import { Spinner } from "../ui/spinner"
 
-export default function signin() {
+export default function Signin() {
 
   const [isSubmitting, setIsSubmitting] = useState(false)
   const router = useRouter();

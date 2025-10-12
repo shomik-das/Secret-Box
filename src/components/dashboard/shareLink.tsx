@@ -10,7 +10,7 @@ import { useSession } from "next-auth/react"
 import { User } from "next-auth"
 import { Skeleton } from "@/components/ui/skeleton"
 
-const shareLink = () => {
+const ShareLink = () => {
   const [copied, setCopied] = useState(false)
   const {data: session, status} = useSession();
   const [baseUrl, setBaseUrl] = useState("");
@@ -75,4 +75,4 @@ const shareLink = () => {
   )
 }
 
-export default shareLink
+export default ShareLink

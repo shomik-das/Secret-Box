@@ -6,7 +6,7 @@ import { Dispatch, SetStateAction, useState } from 'react'
 export const Account: React.FC<{
   defaultTab?: 0 | 1
   firstTab: React.ReactNode
-  secondTab: any
+  secondTab: React.ReactNode
 }> = ({ defaultTab = 0, firstTab, secondTab }) => {
   const [currentTab, setCurrentTab] = useState<0 | 1>(defaultTab)
 

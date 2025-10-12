@@ -4,7 +4,13 @@ import dbConnection from "@/lib/dbConnection";
 import User from "@/model/User";
 import mongoose from "mongoose";
 import { ClientMessage } from "@/types/ClientMessage";
-
+export interface IMessage {
+  _id: mongoose.Types.ObjectId;
+  content: string;
+  createdAt: Date;
+  read: boolean;
+  starred: boolean;
+}
 
 export async function GET(request: Request) {
     try{
@@ -47,7 +53,7 @@ export async function GET(request: Request) {
             }), {status: 404});
         }
 
-        const clientMessages = userDB[0].messages.map((msg: any) => ({
+        const clientMessages = userDB[0].messages.map((msg: IMessage) => ({
             _id: msg._id.toString(),
             content: msg.content,
             createdAt: msg.createdAt.toISOString(),

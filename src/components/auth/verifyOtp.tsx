@@ -10,8 +10,9 @@ import { InputOTP, InputOTPSlot} from "@/components/ui/input-otp"
 import { useParams, useRouter } from 'next/navigation';
 import { signIn } from "next-auth/react";
 import { Spinner } from "../ui/spinner"
+import { Span } from "next/dist/trace"
 
-export default function verifyOtp() {
+export default function VerifyOtp() {
   const [otp, setOtp] = useState("")
   const [isLoading, setIsLoading] = useState(false)
   const [isResending, setIsResending] = useState(false)
@@ -107,7 +108,7 @@ export default function verifyOtp() {
         </div>
         <CardTitle className="text-2xl font-bold">Verification Code</CardTitle>
         <CardDescription>
-          We've sent a 6-digit verification code to your email address
+          <span> {`We've sent a 6-digit verification code to your email address`} </span>
         </CardDescription>
       </CardHeader>
 
@@ -137,11 +138,11 @@ export default function verifyOtp() {
         </div>
 
         <Button onClick={handleVerify} className="w-full cursor-pointer" disabled={isLoading || otp.length !== 6}>
-          {isLoading ? <> <Spinner/> "Verifying" </> : "Verify Email"}
+          {isLoading ? <> <Spinner/> <span> Verifying </span> </> : <span> Verify Email </span>}
         </Button>
 
         <div className="text-center">
-          <span className="text-sm text-muted-foreground">Didn't receive the code?</span>
+          <span className="text-sm text-muted-foreground">{`Didn't receive the code?`}</span>
           <Button
             variant="link"
             onClick={handleResendOTP}
@@ -150,7 +151,7 @@ export default function verifyOtp() {
           >
             {isResending ? (
               <>
-                Sending...
+               <span>Sending...</span>
               </>
             ) : timeLeft > 0 ? (
               `Resend in ${timeLeft}s`

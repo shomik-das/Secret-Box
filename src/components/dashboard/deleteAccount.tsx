@@ -24,7 +24,7 @@ import { useState, useEffect } from "react";
 import { toast } from "sonner";
 import { signOut } from "next-auth/react";
 
-const deleteAccount = () => {
+const DeleteAccount = () => {
   const [isDeleting, setIsDeleting] = useState(false);
 
   const handleDeleteAccount = async () => {
@@ -109,4 +109,4 @@ const deleteAccount = () => {
   );
 };
 
-export default deleteAccount;
+export default DeleteAccount;

@@ -6,7 +6,7 @@ import { MoonIcon, SunIcon } from "lucide-react"
 import { Toggle } from "@/components/ui/toggle"
 import { useTheme } from "next-themes"
 
-export default function oggleTheme() {
+export default function ToggleTheme() {
   const {theme, setTheme} = useTheme()
 
   return (

@@ -10,7 +10,7 @@ interface DashboardCardProps {
     value: string;
     change: string;
     changeType: 'positive' | 'negative';
-    icon: any;
+    icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
     color: string;
     bgColor: string;
   };

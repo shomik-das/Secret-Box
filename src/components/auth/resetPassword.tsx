@@ -15,7 +15,7 @@ import { Spinner } from "../ui/spinner"
 
 
 
-const  resetPassword = () => {
+const  ResetPassword = () => {
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
   const [formData, setFormData] = useState({    //todo need to study this 
@@ -144,11 +144,11 @@ const  resetPassword = () => {
             )}
           </div>
           <Button type="submit" className="w-full cursor-pointer" size="lg" disabled={isLoading}>
-            {isLoading ? <> <Spinner/> "Updating" </> : "Update Password"}
+            {isLoading ? <> <Spinner/> <span> Updating </span> </> : <span> Update Password </span>}
           </Button>
         </form>
       </CardContent>
     </Card>
   )
 }
-export default resetPassword
+export default ResetPassword

@@ -2,10 +2,10 @@ import { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import dbConnection  from "@/lib/dbConnection";
 import User from "@/model/User";
+import {User as UserType} from "@/model/User";
 import bcrypt from "bcryptjs";
 import GoogleProvider from "next-auth/providers/google";
 import GitHubProvider from "next-auth/providers/github";
-import { use } from "react";
 
 export const options: NextAuthOptions = {
     providers: [
@@ -15,7 +15,7 @@ export const options: NextAuthOptions = {
                 identifier: { label: "identifier", type: "text", placeholder: "Username or Email" },
                 password: { label: "Password", type: "password", placeholder: "Password" }
             },
-            async authorize(credentials, req): Promise<any> {
+            async authorize(credentials, req): Promise<any>{
                 if(!credentials?.identifier || !credentials?.password){
                     throw new Error("Please enter all the fields");
                 }
