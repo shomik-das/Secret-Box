@@ -76,7 +76,7 @@ export default function HeroSection() {
                                             className="text-base font-semibold h-12 px-8 shadow-lg shadow-primary/25 hover:shadow-xl hover:shadow-primary/30 transition-all group"
                                             asChild
                                         >
-                                            <Link href="/auth/signin-signup" >
+                                            <Link href="/u/shomik_das" >
                                                 Send messages
                                                 <ArrowRight 
                                                 className="ml-2 h-5 w-5 -me-1 opacity-60 transition-transform group-hover:translate-x-0.5"
@@ -92,7 +92,7 @@ export default function HeroSection() {
                                         size="lg"
                                         variant="outline"
                                         className="text-base font-semibold h-12 px-8 bg-transparent backdrop-blur-sm">
-                                        <Link href="#link">
+                                        <Link href="/auth/signin-signup">
                                             <span className="text-nowrap">Receive messages</span>
                                         </Link>
                                     </Button>

@@ -67,7 +67,7 @@ const shareLink = () => {
         </span>
         <Input readOnly value={link} aria-label="Your Secret Box link" className="font-mono" />
         <Button onClick={onCopy} aria-label="Copy link">
-          {copied ? <Check className="mr-2 h-4 w-4" /> : <Copy className="mr-2 h-4 w-4" />}
+          {copied ? <Check /> : <Copy/>}
           {copied ? "Copied" : "Copy"}
         </Button>
       </CardContent>

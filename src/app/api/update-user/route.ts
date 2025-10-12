@@ -4,6 +4,7 @@ import User from "@/model/User";
 import { getServerSession } from "next-auth";
 import { options } from "../auth/[...nextauth]/options";
 
+
 export const POST = async (req: Request) => {
     try{
         await dbConnection();

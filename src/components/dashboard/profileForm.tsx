@@ -17,6 +17,7 @@ import { User } from "next-auth"
 import { Spinner } from "../ui/spinner"
 import { profileSchema } from "@/schema/profileSchema"
 import { ProfileSkeleton } from "./skeletons/profileFormSkeleton"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 
 
 type ProfileFormType = z.infer<typeof profileSchema>
@@ -31,6 +32,9 @@ export function ProfileForm() {
   const fileInputRef = useRef<HTMLInputElement>(null)
   const debounced = useDebounceCallback(setUsername, 400)
   const [user, setUser] = useState<User | null>(null)
+  const [previewImage, setPreviewImage] = useState<string | null>(null)
+  const [selectedFile, setSelectedFile] = useState<File | null>(null)
+
 
   const { data: session, status, update } = useSession()
   const SessionUsername = session?.user?.username;
@@ -98,7 +102,8 @@ export function ProfileForm() {
   }
 
   // ---------- Image Upload ----------
-  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    e.preventDefault();
     const file = e.target.files?.[0]
     if (!file) return
     if (file.size > 5 * 1024 * 1024) {
@@ -109,20 +114,10 @@ export function ProfileForm() {
       toast.error("Please select an image file")
       return
     }
-    const reader = new FileReader()
-    reader.onloadend = () => form.setValue("image", reader.result as string)
-    reader.readAsDataURL(file)
-  }
-
-  const getInitials = (name: string) =>{
-    return(
-      name
-      .split(" ")
-      .filter(Boolean)
-      .map((n) => n[0])
-      .join("")
-      .toUpperCase()
-    )
+    setSelectedFile(file)
+    const previewUrl = URL.createObjectURL(file)
+    form.setValue("image", previewUrl, { shouldValidate: true , shouldDirty: true })
+    setPreviewImage(previewUrl)
   }
 
 
@@ -130,6 +125,23 @@ export function ProfileForm() {
   const onSubmit = async (data: ProfileFormType) => {
     try {
       setIsLoading(true)
+      if(selectedFile){
+        const formData = new FormData()
+        formData.append("image", selectedFile)
+        const res = await fetch("/api/upload", {
+          method: "POST",
+          body: formData,
+        })
+        const result = await res.json()
+
+        if(!result.success){
+          toast.error(result.message)
+          return
+        }
+        data.image = result.url
+      }
+
+      // update the user in the DB and the Session
       const res = await fetch("/api/update-user", {
         method: "POST",
         headers: {
@@ -148,6 +160,9 @@ export function ProfileForm() {
       toast.success(result.message)
       form.reset(data)
       setIsEditing(false)
+      setUser(result.user)
+
+      //update the session
       await update({
         user: {
           ...session?.user,
@@ -192,19 +207,18 @@ export function ProfileForm() {
               {/* Avatar */}
               <div className="flex items-start gap-6">
                 <div className="relative">
-                  <div className="h-32 w-32 rounded-xl border overflow-hidden bg-muted">
-                    {form.watch("image") ? (
-                      <img
-                        src={form.watch("image") || user?.image}
-                        alt={form.watch("name") || user?.name || "User"}
-                        className="h-full w-full object-cover"
+                  <Avatar className="h-32 w-32 cursor-pointer rounded-2xl ring-2 ring-offset-2 ring-primary">
+                    <AvatarImage
+                      src={
+                        previewImage? previewImage: form.watch("image")
+                        ? form.watch("image")?.replace("/upload/", "/upload/w_200,h_200,c_fill/")
+                        : ""
+                      }
+                      alt="Profile"
+                      className="h-full w-full object-cover"
                       />
-                    ) : (
-                      <div className="h-full w-full flex items-center justify-center text-3xl font-semibold text-muted-foreground">
-                        {getInitials(form.watch("name") || user?.name || "User")}
-                      </div>
-                    )}
-                  </div>
+                      <AvatarFallback>U</AvatarFallback>
+                    </Avatar>
                   {isEditing && (
                     <>
                       <input
@@ -251,7 +265,21 @@ export function ProfileForm() {
                     </FormItem>
                   )}
                 />
+                
                 <FormField
+                control={form.control}
+                name="email"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Email</FormLabel>
+                    <Input {...field} disabled={true} />
+                    {/* <p className="text-xs text-muted-foreground">A brief description of what you do</p> */}
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              </div>
+              <FormField
                   control={form.control}
                   name="username"
                   render={({ field }) => (
@@ -280,7 +308,6 @@ export function ProfileForm() {
                     </FormItem>
                   )}
                 />
-              </div>
               <FormField
                 control={form.control}
                 name="headline"
@@ -309,7 +336,7 @@ export function ProfileForm() {
               {/* Buttons */}
               {isEditing && (
                 <div className="flex gap-3 pt-4 border-t border-border">
-                  <Button type="submit" disabled={isLoading || !form.formState.isValid} className="min-w-[120px]">
+                  <Button type="submit" disabled={isLoading || !form.formState.isValid}>
                     {isLoading ? (
                       <>
                         <Spinner/>
@@ -317,7 +344,7 @@ export function ProfileForm() {
                       </>
                     ) : (
                       <>
-                        <Save className="mr-2 h-4 w-4" /> Save Changes
+                        <Save/> Save
                       </>
                     )}
                   </Button>
@@ -328,6 +355,9 @@ export function ProfileForm() {
                     onClick={() => {
                       form.reset(user as ProfileFormType)
                       setIsEditing(false)
+                      setPreviewImage(null)
+                      setSelectedFile(null)
+                      usernameMessage && setUsernameMessage("")
                     }}
                   >
                     Cancel

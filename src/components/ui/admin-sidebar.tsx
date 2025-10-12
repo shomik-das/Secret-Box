@@ -3,7 +3,7 @@
 import { memo } from 'react';
 import { useTheme } from 'next-themes';
 import Link from 'next/link';
-import { Home, Inbox, Link2, Bell, Settings2, Quote, User as UserIcon, LogOutIcon } from "lucide-react"
+import { Home, Inbox, Link2, User as UserIcon, LogOutIcon, Settings, Moon, Sun, } from "lucide-react"
 import { signOut, useSession } from "next-auth/react"
 import { User } from "next-auth"
 import {
@@ -24,15 +24,6 @@ import {
   AvatarFallback,
   AvatarImage,
 } from "@/components/ui/avatar"
-import {
-  LayoutDashboard,
-  Users,
-  BarChart3,
-  Shield,
-  Settings,
-  Moon,
-  Sun,
-} from 'lucide-react';
 import { Skeleton } from '@/components/ui/skeleton';
 import { usePathname } from 'next/navigation';
 
@@ -79,7 +70,7 @@ export const AdminSidebar = memo(() => {
             <SidebarMenuButton size="lg">
                 <Avatar className='rounded-md overflow-hidden'>
                   <AvatarImage src={user?.image} alt="Profile image" className='rounded-md object-cover'/>
-                  <AvatarFallback>'U'</AvatarFallback>
+                  <AvatarFallback>U</AvatarFallback>
                 </Avatar>
                 <div className="grid flex-1 text-left text-sm leading-tight">
                   <span className="truncate font-semibold text-sm">{user?.name}</span>

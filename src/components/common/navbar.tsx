@@ -108,7 +108,7 @@ export default function Navbar() {
 
           {/* User / Login */}
             { !user ? (
-                <Link href="/auth/signin-signup"> <Button>  Sign In</Button></Link>
+                <Button><Link href="/auth/signin-signup">Sign In</Link></Button>
             ) : (
               <>
               <div className="">

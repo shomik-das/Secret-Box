@@ -1,11 +1,9 @@
 import {
-  BoltIcon,
-  BookOpenIcon,
-  Layers2Icon,
   LogOutIcon,
-  PinIcon,
   UserPenIcon,
 } from "lucide-react"
+
+import { Inbox, Link2, Settings} from "lucide-react"
 
 import {
   Avatar,
@@ -25,6 +23,7 @@ import {
 import { User } from "next-auth"
 import { signOut } from "next-auth/react"
 import { ChevronDownIcon } from "lucide-react"
+import Link from "next/link"
 
 export default function UserMenu({ user }: { user?: User }) {
   return (
@@ -49,32 +48,36 @@ export default function UserMenu({ user }: { user?: User }) {
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
-          <DropdownMenuItem>
-            <BoltIcon size={16} className="opacity-60" aria-hidden="true" />
-            <span>Option 1</span>
-          </DropdownMenuItem>
-          <DropdownMenuItem>
-            <Layers2Icon size={16} className="opacity-60" aria-hidden="true" />
-            <span>Option 2</span>
-          </DropdownMenuItem>
-          <DropdownMenuItem>
-            <BookOpenIcon size={16} className="opacity-60" aria-hidden="true" />
-            <span>Option 3</span>
-          </DropdownMenuItem>
+          <Link href="/user-dashboard/messages">
+            <DropdownMenuItem>
+              <Inbox size={16} className="opacity-60" aria-hidden="true" />
+              <span>Messages</span>
+            </DropdownMenuItem>
+          </Link>
+          <Link href="/user-dashboard/share-link">
+            <DropdownMenuItem>
+              <Link2 size={16} className="opacity-60" aria-hidden="true" />
+              <span>Share Link</span>
+            </DropdownMenuItem>
+          </Link>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
-          <DropdownMenuItem>
-            <PinIcon size={16} className="opacity-60" aria-hidden="true" />
-            <span>Option 4</span>
-          </DropdownMenuItem>
-          <DropdownMenuItem>
-            <UserPenIcon size={16} className="opacity-60" aria-hidden="true" />
-            <span>Option 5</span>
-          </DropdownMenuItem>
+          <Link href="/user-dashboard/profile">
+            <DropdownMenuItem>
+              <UserPenIcon size={16} className="opacity-60" aria-hidden="true" />
+              <span>Profile</span>
+            </DropdownMenuItem>
+          </Link>
+          <Link href="/user-dashboard/settings">
+            <DropdownMenuItem>
+              <Settings size={16} className="opacity-60" aria-hidden="true" />
+              <span>Settings</span>
+            </DropdownMenuItem>
+          </Link>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
-        <DropdownMenuItem onClick={() => signOut({ callbackUrl: "/" })}>
+        <DropdownMenuItem onClick={() => signOut({ redirect: false })}>
           <LogOutIcon size={16} className="opacity-60" aria-hidden="true"  />
           <span>Logout</span>
         </DropdownMenuItem>
