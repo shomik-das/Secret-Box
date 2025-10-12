@@ -1,8 +1,8 @@
 import VerifyOtp from "@/components/auth/verifyOtp";
-const page = () => {
+const Page = () => {
     return (
         <VerifyOtp/>
     )
 }
 
-export default page;
+export default Page;

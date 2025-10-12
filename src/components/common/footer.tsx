@@ -7,15 +7,15 @@ const links = [
     href: "#",
   },
   {
+    title: "Confessions",
+    href: "#",
+  },
+  {
     title: "Features",
     href: "#",
   },
   {
-    title: "About",
-    href: "#",
-  },
-  {
-    title: "Contact",
+    title: "Get Started",
     href: "#",
   },
 ];

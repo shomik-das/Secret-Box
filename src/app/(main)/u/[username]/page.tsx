@@ -7,13 +7,11 @@ import { toast } from "sonner"
 import {User} from "@/model/User";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import Navbar from "@/components/common/navbar";
-import Footer from "@/components/common/footer";
 import UserProfileSkeleton from "@/components/send-message/skeletons/userProfileSkeleton";
 import MessageFormSkeleton from "@/components/send-message/skeletons/messageFormSkeleton";
 
 
-const page = () =>{
+const Page = () =>{
     const params = useParams<{ username: string }>();
     const username = params.username;
     const [userData, setUserData] = useState<User>();
@@ -79,7 +77,7 @@ const page = () =>{
   )
 }
 
-export default page; 
+export default Page; 
 
 
 

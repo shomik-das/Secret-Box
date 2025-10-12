@@ -1,7 +1,7 @@
 import Signin from "@/components/auth/signin";
 import Signup from "@/components/auth/signup";
 import { Account } from "@/components/ui/account";
-const page = () => {
+const Page = () => {
     const defaultTab = 0;
     return (
         <>
@@ -16,4 +16,4 @@ const page = () => {
     )
 }
 
-export default page;
+export default Page;

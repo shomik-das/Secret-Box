@@ -1,8 +1,6 @@
 import { Lock, User } from "lucide-react";
-import Navbar from "@/components/common/navbar";
-import Footer from "@/components/common/footer";
 
-export default function layout ({children}: {children: React.ReactNode}) {
+export default function Layout ({children}: {children: React.ReactNode}) {
   return (
     <>
     <div className="min-h-[calc(100vh-4rem)] from-background via-card/50 to-background flex items-center justify-center max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-2">

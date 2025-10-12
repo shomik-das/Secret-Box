@@ -1,8 +1,8 @@
 import SendOtp from "@/components/auth/resetLink";
-const page = () => {
+const Page = () => {
     return (
         <SendOtp/>
     )
 }
 
-export default page;
+export default Page;

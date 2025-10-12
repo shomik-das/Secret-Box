@@ -16,12 +16,13 @@ import {
 } from "@/components/ui/navigation-menu"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import ToggleTheme from "./toggleTheme"
+import { AnimatedThemeToggler } from "../ui/animated-theme-toggler"
 
 const navigationLinks = [
   { href: "/", label: "Home" },
-  { href: "/features", label: "Features" },
-  { href: "/about", label: "About" },
-  { href: "/contact", label: "Contact" },
+  { href: "#", label: "Confession" },
+  { href: "#", label: "Features" },
+  { href: "#", label: "Get Started" },
 ]
 
 export default function Navbar() {
@@ -29,6 +30,12 @@ export default function Navbar() {
   const user: User = session?.user
   const id = useId()
 
+  const scrollToTopHandler = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    })
+  }
   return (
     <header className="sticky top-0 z-40 w-full bg-background/80 backdrop-blur border-b ">
       <div className="flex h-16 items-center justify-between gap-4 mx-auto max-w-6xl px-4 md:px-6">
@@ -73,6 +80,7 @@ export default function Navbar() {
           <Link href="#" className="text-primary hover:text-primary/90 ">
             <span
             className="font-semibold text-xl text-primary"
+            onClick={scrollToTopHandler}
             >
               SECRET BOX
             </span>
@@ -99,7 +107,7 @@ export default function Navbar() {
         <div className="flex items-center gap-2">
           {/* Theme toggle */}
             <div className="flex items-center gap-2 ">
-            <ToggleTheme />
+            <AnimatedThemeToggler />
             </div>
           {/* Notification */}
           <div className="flex items-center gap-2 cursor-pointer">

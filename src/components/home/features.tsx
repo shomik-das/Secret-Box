@@ -12,23 +12,23 @@ export default function FeaturesSection() {
                 <div className="px-3 pt-3 md:-mx-8 flex justify-center">
                     <div className="aspect-88/36 mask-b-from-75% mask-b-to-95% relative max-w-5xl w-full">
                     <Image
-      src="/feature_2.png"
-      alt="Feature illustration light"
-      width={2797}
-      height={1137}
-      className="rounded-2xl dark:hidden"
-      priority
-    />
+                    src="/profile_light.png"
+                    alt="Feature illustration light"
+                    width={2797}
+                    height={1137}
+                    className="rounded-2xl dark:hidden"
+                    priority
+                    />
 
-    {/* Dark mode image */}
-    <Image
-      src="/feature_1.png"
-      alt="Feature illustration dark"
-      width={2797}
-      height={1137}
-      className="hidden dark:block rounded-2xl"
-      priority
-    />
+                        {/* Dark mode image */}
+                    <Image
+                    src="/profile_dark.png"
+                    alt="Feature illustration dark"
+                    width={2797}
+                    height={1137}
+                    className="hidden dark:block rounded-2xl"
+                    priority
+                    />
                     </div>
                 </div>
                 {/* <div className="mask-b-from-75% mask-l-from-75% mask-b-to-95% mask-l-to-95% relative -mx-4 pr-3 pt-3 md:-mx-12">

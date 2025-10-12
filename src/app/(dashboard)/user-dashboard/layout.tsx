@@ -5,7 +5,7 @@ import { DashboardHeader } from "@/components/ui/dashboard-header";
 import { AdminSidebar } from "@/components/ui/admin-sidebar";
 import { useSelectedLayoutSegment } from "next/navigation"
 
-export default function layout({children,}: Readonly<{children: React.ReactNode;}>) {
+export default function Layout({children,}: Readonly<{children: React.ReactNode;}>) {
   const selectedLayoutSegment = useSelectedLayoutSegment();
 
   return (
