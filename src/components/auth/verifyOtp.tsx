@@ -4,17 +4,18 @@ import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { toast } from "sonner"
-import { ArrowLeft, Mail, RefreshCw, Loader2 } from "lucide-react"
+import { Mail } from "lucide-react"
 import { OTPInput, SlotProps } from "input-otp"
 import { InputOTP, InputOTPSlot} from "@/components/ui/input-otp"
 import { useParams, useRouter } from 'next/navigation';
 import { signIn } from "next-auth/react";
+import { Spinner } from "../ui/spinner"
 
 export default function verifyOtp() {
   const [otp, setOtp] = useState("")
   const [isLoading, setIsLoading] = useState(false)
   const [isResending, setIsResending] = useState(false)
-  const [timeLeft, setTimeLeft] = useState(60)
+  const [timeLeft, setTimeLeft] = useState(5)
   const params = useParams<{ username: string }>();
   
   const router = useRouter();
@@ -135,21 +136,20 @@ export default function verifyOtp() {
             </InputOTP> */}
         </div>
 
-        <Button onClick={handleVerify} className="w-full" disabled={isLoading || otp.length !== 6}>
-          {isLoading ? "Verifying..." : "Verify Email"}
+        <Button onClick={handleVerify} className="w-full cursor-pointer" disabled={isLoading || otp.length !== 6}>
+          {isLoading ? <> <Spinner/> "Verifying" </> : "Verify Email"}
         </Button>
 
-        <div className="text-center space-y-2">
-          <p className="text-sm text-muted-foreground">Didn't receive the code?</p>
+        <div className="text-center">
+          <span className="text-sm text-muted-foreground">Didn't receive the code?</span>
           <Button
-            variant="ghost"
+            variant="link"
             onClick={handleResendOTP}
             disabled={timeLeft > 0 || isResending}
-            className="text-primary hover:text-primary/80"
+            className=" pl-2 cursor-pointer"
           >
             {isResending ? (
               <>
-                <RefreshCw className="w-4 h-4 mr-2 animate-spin" />
                 Sending...
               </>
             ) : timeLeft > 0 ? (
@@ -161,11 +161,10 @@ export default function verifyOtp() {
         </div>
 
         <Button
-          variant="ghost"
+          variant="link"
           onClick={() => router.back()}
-          className="w-full text-muted-foreground hover:text-foreground"
+          className="w-full text-muted-foreground hover:text-foreground cursor-pointer"
         >
-          <ArrowLeft className="w-4 h-4 mr-2" />
           Back to Sign In
         </Button>
       </CardContent>

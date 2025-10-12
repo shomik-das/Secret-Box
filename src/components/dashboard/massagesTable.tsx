@@ -302,7 +302,7 @@ const  MessagesTable =({messages, setMessages, isLoading, searchQuery} : Message
               }}
               aria-label="Delete message"
             >
-              <Trash2 className="mr-2 h-4 w-4" />
+              <Trash2/>
               Delete
             </Button>
           </DialogFooter>

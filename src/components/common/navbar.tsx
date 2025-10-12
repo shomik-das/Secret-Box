@@ -98,17 +98,17 @@ export default function Navbar() {
         {/* Right side */}
         <div className="flex items-center gap-2">
           {/* Theme toggle */}
-          <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 ">
             <ToggleTheme />
-          </div>
+            </div>
           {/* Notification */}
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 cursor-pointer">
             <NotificationMenu />
           </div>
 
           {/* User / Login */}
             { !user ? (
-                <Button><Link href="/auth/signin-signup">Sign In</Link></Button>
+                <Button asChild><Link href="/auth/signin-signup">Sign In</Link></Button>
             ) : (
               <>
               <div className="">

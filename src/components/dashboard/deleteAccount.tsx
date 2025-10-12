@@ -73,7 +73,7 @@ const deleteAccount = () => {
                   {isDeleting ? (
                     <>
                       <Spinner />
-                      Deleting...
+                      Deleting
                     </>
                   ) : (
                     <>

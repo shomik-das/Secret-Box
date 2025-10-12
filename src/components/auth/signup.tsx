@@ -10,13 +10,14 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Form, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
-import { Loader2, User, Mail, Lock, ArrowRight } from "lucide-react"
+import { User, Mail, Lock } from "lucide-react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
 import { FcGoogle } from "react-icons/fc";
 import { FaGithub } from "react-icons/fa"; 
 import { signIn } from "next-auth/react"
 import { useRouter } from "next/navigation"
+import { Spinner } from "../ui/spinner"
 
 const signup = () => {
   const [username, setUsername] = useState("")
@@ -122,7 +123,7 @@ const signup = () => {
                   <FormMessage />
                   {!form.formState.errors.username && (
                     <>
-                      {isCheckingUsername && <Loader2 className="animate-spin h-4 w-4" />}
+                      {isCheckingUsername && <Spinner />}
                       {!isCheckingUsername && usernameMessage && (
                         <p className={`text-sm ${usernameMessage === "Username is available"? "text-green-500": "text-red-500"}`}>
                           {usernameMessage}
@@ -167,10 +168,10 @@ const signup = () => {
                 </FormItem>
               )}
             />
-            <Button type="submit" className="w-full" size="lg" disabled={isSubmitting}>
+            <Button type="submit" className="w-full cursor-pointer" size="lg" disabled={isSubmitting}>
               {isSubmitting ? (
                 <>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  <Spinner/>
                   Please wait
                 </>
               ) : (
@@ -190,11 +191,11 @@ const signup = () => {
           </div>
         </div>
         <div className="grid grid-cols-2 gap-4">
-          <Button variant="outline" className="w-full bg-transparent" onClick={() => signIn("google")}> 
+          <Button variant="outline" className="w-full bg-transparent cursor-pointer" onClick={() => signIn("google")}> 
             <FcGoogle className="mr-2 h-4 w-4" />
             Google
           </Button>
-          <Button variant="outline" className="w-full bg-transparent" onClick={() => signIn("github")}>
+          <Button variant="outline" className="w-full bg-transparent cursor-pointer" onClick={() => signIn("github")}>
             <FaGithub className="mr-2 h-4 w-4" />
             GitHub
           </Button>

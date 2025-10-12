@@ -28,7 +28,7 @@ const CardSkeleton = () => (
 const SenderControl = () => {
   const [isLoading, setIsLoading] = useState(true) 
   const [isSwitchLoading, setIsSwitchLoading] = useState(false) 
-  const [acceptMessages, setAcceptMessages] = useState(false)
+  const [acceptMessages, setAcceptMessages] = useState(true)
 
   const fetchAcceptMessages = useCallback(async () => {
     try {
@@ -42,7 +42,7 @@ const SenderControl = () => {
         toast.error(data.message || "Failed to fetch settings")
         return
       }
-      setAcceptMessages(data.acceptMessages)
+      setAcceptMessages(data.isAcceptingMessages)
     } catch (err) {
       console.error("Error fetching accept messages", err)
       toast.error((err as Error).message || "Error fetching messages settings")

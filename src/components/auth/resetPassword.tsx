@@ -10,6 +10,8 @@ import { Label } from "@/components/ui/label"
 import { Lock, Eye, EyeOff } from "lucide-react"
 import { useSearchParams, useParams, useRouter } from 'next/navigation';
 import { toast } from "sonner"
+import { Spinner } from "../ui/spinner"
+
 
 
 
@@ -95,7 +97,7 @@ const  resetPassword = () => {
                 type="button"
                 variant="ghost"
                 size="sm"
-                className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
+                className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent cursor-pointer"
                 onClick={() => setShowPassword(!showPassword)}
               >
                 {showPassword ? (
@@ -125,7 +127,7 @@ const  resetPassword = () => {
                 type="button"
                 variant="ghost"
                 size="sm"
-                className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
+                className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent cursor-pointer"
                 onClick={() => setShowConfirmPassword(!showConfirmPassword)}
               >
                 {showConfirmPassword ? (
@@ -141,8 +143,8 @@ const  resetPassword = () => {
                 </p>
             )}
           </div>
-          <Button type="submit" className="w-full" size="lg" disabled={isLoading}>
-            {isLoading ? "Updating..." : "Update Password"}
+          <Button type="submit" className="w-full cursor-pointer" size="lg" disabled={isLoading}>
+            {isLoading ? <> <Spinner/> "Updating" </> : "Update Password"}
           </Button>
         </form>
       </CardContent>

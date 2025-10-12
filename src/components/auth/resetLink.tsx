@@ -10,6 +10,7 @@ import { Label } from "@/components/ui/label"
 import { Mail, ArrowLeft } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { toast } from "sonner"
+import { Spinner } from "../ui/spinner"
 
 const  sendOtp = () => {
   const [email, setEmail] = useState("")
@@ -70,13 +71,12 @@ const  sendOtp = () => {
             </div>
           </div>
 
-          <Button type="submit" className="w-full" size="lg" disabled={isLoading}>
-            {isLoading ? "Sending..." : "Send Code"}
+          <Button type="submit" className="w-full cursor-pointer" size="lg" disabled={isLoading}>
+            {isLoading ? (<> <Spinner/> "Sending"  </>) : (<> "Send Code" </>)}
           </Button>
         </form>
 
-        <Button variant="ghost" onClick={()=>{router.back()}} className="w-full text-muted-foreground hover:text-foreground">
-          <ArrowLeft className="mr-2 h-4 w-4 " />
+        <Button variant="link" onClick={()=>{router.back()}} className=" w-full text-muted-foreground hover:text-foreground cursor-pointer">
           Back to Sign In
         </Button>
       </CardContent>
