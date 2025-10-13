@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { Separator } from "@/components/ui/separator";
+
 import Link from "next/link";
 import {
   DropdownMenu,
@@ -28,7 +29,13 @@ import {
   Download,
   RefreshCw,
   MoreHorizontal,
+  SearchIcon
 } from "lucide-react";
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupInput,
+} from "@/components/ui/input-group"
 
 interface MessageHeaderProps {
   searchQuery: string;
@@ -55,7 +62,7 @@ export const MessageHeader = memo(
               <BreadcrumbItem>
                 <BreadcrumbLink asChild>
                   <Link href="/" className="flex items-center gap-2">
-                    <span className="font-semibold text-lg tracking-tight">
+                    <span className="font-semibold text-base md:text-lg tracking-tight">
                       SECRET BOX
                     </span>
                   </Link>
@@ -76,15 +83,12 @@ export const MessageHeader = memo(
               className="flex items-center gap-2"
             >
               {/* Search Input - Hide on Mobile */}
-              <div className="relative hidden md:block">
-                <Search className="text-muted-foreground absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 transform" />
-                <Input
-                  placeholder="Search..."
-                  value={searchQuery}
-                  onChange={(e) => onSearchChange(e.target.value)}
-                  className="w-64 pl-10"
-                />
-              </div>
+              <InputGroup>
+                <InputGroupInput placeholder="Search..." value={searchQuery} onChange={(e) => onSearchChange(e.target.value)}/>
+                <InputGroupAddon>
+                  <SearchIcon />
+                </InputGroupAddon>
+              </InputGroup>
               {/* Desktop Actions */}
               <div className="hidden items-center gap-2 md:flex">
                 <Button variant="outline" size="sm">
@@ -112,10 +116,6 @@ export const MessageHeader = memo(
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end" className="w-48">
-                  <DropdownMenuItem onClick={() => onSearchChange("")}>
-                    <Search className="mr-2 h-4 w-4" />
-                    Search
-                  </DropdownMenuItem>
                   <DropdownMenuItem>
                     <Filter className="mr-2 h-4 w-4" />
                     Filter
@@ -128,9 +128,6 @@ export const MessageHeader = memo(
               </DropdownMenu>
             </motion.div>
           </AnimatePresence>
-          <Button variant="outline" size="sm">
-            <Bell className="h-4 w-4" />
-          </Button>
         </div>
       </header>
     );

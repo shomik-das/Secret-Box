@@ -3,7 +3,7 @@ import Image from 'next/image'
 
 export default function FeaturesSection() {
     return (
-        <section className="pt-16 md:pt-32">
+        <section id="features" className="pt-16 md:pt-32">
             <div className="mx-auto max-w-6xl space-y-12 px-6">
                 <div className="relative z-10 max-w-2xl">
                     <h2 className="text-4xl font-bold lg:text-5xl">Why Choose Secret Box</h2>

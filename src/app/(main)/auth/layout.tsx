@@ -8,7 +8,7 @@ export default function Layout ({children}: {children: React.ReactNode}) {
         {/* Left side - Welcome content */}
         <div className="hidden lg:flex flex-col justify-center space-y-6 px-8">
           <div className="space-y-4">
-            <h1 className="text-4xl font-bold text-balance leading-tight">
+            <h1 className="text-5xl font-bold text-balance leading-tight">
               Share Freely, Stay Anonymous
             </h1>
             <p className="text-lg text-muted-foreground text-pretty">

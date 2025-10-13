@@ -33,7 +33,7 @@ export default function HeroSection() {
     const words: string[] = ["Send", "Receive", "Share"];
     return (
         <>
-            <main className="overflow-hidden">
+            <main id="home" className="overflow-hidden">
                 <div aria-hidden className="absolute inset-0 isolate hidden contain-strict lg:block">
                 </div>
                 <section>

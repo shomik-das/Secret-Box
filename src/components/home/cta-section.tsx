@@ -4,7 +4,7 @@ import Link from "next/link"
 
 export function CTASection() {
   return (
-    <section className="pt-16 md:pt-32">
+    <section id="get-started" className="pt-16 md:pt-32">
       <div className="container mx-auto max-w-5xl px-4">
         <div className="relative overflow-hidden rounded-3xl border border-border bg-gradient-to-br from-primary/10 via-accent/5 to-background p-12 md:p-16 lg:p-20">
           <div className="relative z-10 flex flex-col items-center gap-8 text-center">

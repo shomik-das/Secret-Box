@@ -170,14 +170,13 @@ const  MessagesTable =({messages, setMessages, isLoading, searchQuery} : Message
       <div className={cn("rounded-md border")}>
         <Table>
           <TableHeader>
-  <TableRow>
-    <TableHead className="w-[90px] text-center">Status</TableHead>
-    <TableHead className="flex-1">Message</TableHead>
-    <TableHead className="w-[180px] text-sm text-muted-foreground">Received</TableHead>
-    <TableHead className="w-[120px] text-left">Actions</TableHead>
-  </TableRow>
-</TableHeader>
-
+            <TableRow>
+              <TableHead className="w-[90px] text-center">Status</TableHead>
+              <TableHead className="flex-1">Message</TableHead>
+              <TableHead className="w-[180px] text-sm text-muted-foreground hidden md:table-cell">Received</TableHead>
+              <TableHead className="w-[120px] text-left">Actions</TableHead>
+            </TableRow>
+          </TableHeader>
           <TableBody>
             {isLoading ? (
               Array.from({ length: 5 }).map((_, i) => (
@@ -188,7 +187,7 @@ const  MessagesTable =({messages, setMessages, isLoading, searchQuery} : Message
                 <TableCell className="flex-1">
                   <Skeleton className="h-5 w-full" />
                 </TableCell>
-                <TableCell className="w-[180px] md:table-cell">
+                <TableCell className="hidden w-[180px] md:table-cell">
                   <Skeleton className="h-5 w-32" />
                 </TableCell>
                 <TableCell className="w-[120px]">
@@ -226,10 +225,10 @@ const  MessagesTable =({messages, setMessages, isLoading, searchQuery} : Message
                 <TableCell className="flex-1 truncate">
                   <p className="text-pretty line-clamp-2">{m.content}</p>
                 </TableCell>
-                <TableCell className=" md:table-cell w-[180px] text-sm text-muted-foreground">
+                <TableCell className="hidden md:table-cell w-[180px] text-sm text-muted-foreground">
                   {new Date(m.createdAt).toLocaleString()}
                 </TableCell>
-                <TableCell className="w-[120px]">
+                <TableCell className=" w-[120px]">
                   <div className="flex items-center justify-end gap-2">
                     <Button
                       size="icon"
@@ -291,7 +290,7 @@ const  MessagesTable =({messages, setMessages, isLoading, searchQuery} : Message
               }}
               aria-label={selected?.starred ? "Unstar" : "Star"}
             >
-              {selected?.starred ? <Star className="mr-2 h-4 w-4 fill-current" /> : <Star className="mr-2 h-4 w-4" />}
+              {selected?.starred ? <Star className=" fill-current" /> : <Star/>}
               {selected?.starred ? "Unstar" : "Star"}
             </Button>
             <Button

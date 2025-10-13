@@ -18,6 +18,11 @@ import { FaGithub } from "react-icons/fa";
 import { signIn } from "next-auth/react"
 import { useRouter } from "next/navigation"
 import { Spinner } from "../ui/spinner"
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupInput,
+} from "@/components/ui/input-group"
 
 const Signup = () => {
   const [username, setUsername] = useState("")
@@ -108,22 +113,30 @@ const Signup = () => {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Username</FormLabel>
-                  <div className="relative">
-                    <User className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                    <Input
-                      {...field}
-                      className="pl-10"
-                      placeholder="Enter your username"
+                  <InputGroup>
+                    <InputGroupInput 
+                      {...field} 
+                      className="pl-10" 
+                      placeholder="Enter your username" 
                       onChange={(e) => {
                         field.onChange(e)
                         debounced(e.target.value)
                       }}
-                    />
-                  </div>
+                      />
+                    <InputGroupAddon>
+                      <User/>
+                    </InputGroupAddon>
+                    <InputGroupAddon align="inline-end">
+                      {!form.formState.errors.username && (
+                        <>
+                          {isCheckingUsername && <Spinner />}
+                        </>
+                      )}
+                    </InputGroupAddon>
+                  </InputGroup>
                   <FormMessage />
                   {!form.formState.errors.username && (
                     <>
-                      {isCheckingUsername && <Spinner />}
                       {!isCheckingUsername && usernameMessage && (
                         <p className={`text-sm ${usernameMessage === "Username is available"? "text-green-500": "text-red-500"}`}>
                           {usernameMessage}

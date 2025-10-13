@@ -16,7 +16,7 @@ export default function VerifyOtp() {
   const [otp, setOtp] = useState("")
   const [isLoading, setIsLoading] = useState(false)
   const [isResending, setIsResending] = useState(false)
-  const [timeLeft, setTimeLeft] = useState(5)
+  const [timeLeft, setTimeLeft] = useState(60)
   const params = useParams<{ username: string }>();
   
   const router = useRouter();

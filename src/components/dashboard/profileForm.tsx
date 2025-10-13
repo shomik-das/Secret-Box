@@ -1,6 +1,6 @@
 "use client"
 
-import { use, useEffect, useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -18,6 +18,7 @@ import { Spinner } from "../ui/spinner"
 import { profileSchema } from "@/schema/profileSchema"
 import { ProfileSkeleton } from "./skeletons/profileFormSkeleton"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/input-group"
 
 
 type ProfileFormType = z.infer<typeof profileSchema>
@@ -272,7 +273,7 @@ export function ProfileForm() {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Email</FormLabel>
-                    <Input {...field} disabled={true} />
+                    <Input {...field} disabled={true} placeholder="Enter your email address" />
                     {/* <p className="text-xs text-muted-foreground">A brief description of what you do</p> */}
                     <FormMessage />
                   </FormItem>
@@ -285,19 +286,27 @@ export function ProfileForm() {
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Username</FormLabel>
-                      <Input
-                        {...field}
-                        disabled={!isEditing}
-                        placeholder="Enter your username"
+                      <InputGroup>
+                        <InputGroupInput 
+                        {...field} 
+                        disabled={!isEditing} 
+                        placeholder="Enter your username" 
                         onChange={(e) => {
-                          field.onChange(e.target.value)
+                          field.onChange(e)
                           debounced(e.target.value)
                         }}
-                      />
+                        />
+                        <InputGroupAddon align="inline-end">
+                          {!form.formState.errors.username && (
+                            <>
+                              {isCheckingUsername && <Spinner />}
+                            </>
+                          )}
+                        </InputGroupAddon>
+                      </InputGroup>
                       <FormMessage />
                       {!form.formState.errors.username && (
                         <>
-                          {isCheckingUsername && <Loader2 className="animate-spin h-4 w-4" />}
                           {!isCheckingUsername && usernameMessage && (
                             <p className={`text-sm ${usernameMessage === "Username is available"? "text-green-500": "text-red-500"}`}>
                               {usernameMessage}

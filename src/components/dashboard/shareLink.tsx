@@ -7,7 +7,6 @@ import { Input } from "@/components/ui/input"
 import { Copy, LinkIcon, Check } from "lucide-react"
 import { toast } from "sonner"
 import { useSession } from "next-auth/react"
-import { User } from "next-auth"
 import { Skeleton } from "@/components/ui/skeleton"
 
 const ShareLink = () => {

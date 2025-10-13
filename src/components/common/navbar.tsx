@@ -2,10 +2,9 @@
 
 import React, { useId } from "react"
 import Link from "next/link"
-import { useSession, signOut } from "next-auth/react"
+import { useSession } from "next-auth/react"
 import { User } from "next-auth"
 import UserMenu from "@/components/user-menu"
-import {Logo} from "@/components/logo"
 import NotificationMenu from "@//components/notification-menu"
 import { Button } from "@/components/ui/button"
 import {
@@ -15,7 +14,6 @@ import {
   NavigationMenuList,
 } from "@/components/ui/navigation-menu"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
-import ToggleTheme from "./toggleTheme"
 import { AnimatedThemeToggler } from "../ui/animated-theme-toggler"
 
 const navigationLinks = [
@@ -26,7 +24,7 @@ const navigationLinks = [
 ]
 
 export default function Navbar() {
-  const { data: session } = useSession()
+  const { data: session, status } = useSession()
   const user: User = session?.user
   const id = useId()
 

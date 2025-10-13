@@ -2,7 +2,7 @@
 
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import { DashboardHeader } from "@/components/ui/dashboard-header";
-import { AdminSidebar } from "@/components/ui/admin-sidebar";
+import { AdminSidebar } from "@/components/dashboard/admin-sidebar";
 import { useSelectedLayoutSegment } from "next/navigation"
 
 export default function Layout({children,}: Readonly<{children: React.ReactNode;}>) {
