@@ -4,7 +4,6 @@ import { getToken } from 'next-auth/jwt'
 export async function middleware(request: NextRequest) {
   const token = await getToken({ req: request , secret: process.env.NEXTAUTH_SECRET})
   const url = request.nextUrl
-  console.log('Token: ', token);
   const isAuthPath = url.pathname.startsWith('/auth')
   const isDashboardPath = url.pathname.startsWith('/user-dashboard')
   const isDashboardRoot = url.pathname === '/user-dashboard'

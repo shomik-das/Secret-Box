@@ -11,7 +11,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Form, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
-import { Loader2, Save, Camera } from "lucide-react"
+import { Save, Camera } from "lucide-react"
 import { useSession } from "next-auth/react"
 import { User } from "next-auth"
 import { Spinner } from "../ui/spinner"
@@ -161,8 +161,7 @@ export function ProfileForm() {
       toast.success(result.message)
       form.reset(data)
       setIsEditing(false)
-      setUser(result.user)
-
+      setUser(result.data)
       //update the session
       await update({
         user: {

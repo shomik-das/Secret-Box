@@ -17,6 +17,7 @@ export const POST = async (req: Request) => {
             }, {status: 401})
         }
         const { id, name, username, headline, question, image } = await req.json()
+        console.log("this is the id: ", id);
         if(!id || id !== user._id){
             return NextResponse.json({
                 success: false,

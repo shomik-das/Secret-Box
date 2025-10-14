@@ -1,8 +1,7 @@
-import { NextAuthOptions } from "next-auth";
+import { NextAuthOptions, User as NextAuthUser } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import dbConnection  from "@/lib/dbConnection";
-import User from "@/model/User";
-import {User as UserType} from "@/model/User";
+import User  from "@/model/User";
 import bcrypt from "bcryptjs";
 import GoogleProvider from "next-auth/providers/google";
 import GitHubProvider from "next-auth/providers/github";
@@ -15,16 +14,17 @@ export const options: NextAuthOptions = {
                 identifier: { label: "identifier", type: "text", placeholder: "Username or Email" },
                 password: { label: "Password", type: "password", placeholder: "Password" }
             },
-            async authorize(credentials, req): Promise<any>{
+            async authorize(credentials): Promise<NextAuthUser | null>{
                 if(!credentials?.identifier || !credentials?.password){
                     throw new Error("Please enter all the fields");
+                    
                 }
                 const {identifier, password} = credentials;
                 await dbConnection();
-                const user = await User.findOne({
+                const user  = await User.findOne({
                     $or: [
-                        { username: credentials?.identifier },
-                        { email: credentials?.identifier }
+                        { username: identifier },
+                        { email: identifier }
                     ]
                 });
                 if(!user){
@@ -40,14 +40,30 @@ export const options: NextAuthOptions = {
                     user.otpSession = false;
                     user.otpSessionExpiry = undefined;
                     await user.save();
-                    return user;
+                    return {
+                        _id: user._id.toString(),
+                        name: user.name,
+                        username: user.username,
+                        email: user.email,
+                        isVerify: user.isVerify,
+                        isAcceptingMessages: user.isAcceptingMessages,
+                        image: user.image
+                    } as  NextAuthUser;
                 }
                     
                 const isPasswordCorrect = await bcrypt.compare(credentials!.password, user.password);
                 if(!isPasswordCorrect){
                     throw new Error("Please enter a valid password");
                 }
-                return user;
+                return {
+                    _id: user._id.toString(),
+                    name: user.name,
+                    username: user.username,
+                    email: user.email,
+                    isVerify: user.isVerify,
+                    isAcceptingMessages: user.isAcceptingMessages,
+                    image: user.image
+                } as NextAuthUser;
             }
         }),
         GoogleProvider({
@@ -61,20 +77,41 @@ export const options: NextAuthOptions = {
     ],
 
     callbacks: {
+        async signIn({ user, account }) {
+            if (account?.provider !== "credentials") {
+                await dbConnection();
+                const existingUser = await User.findOne({ email: user.email });
+                if (!existingUser) {
+                    let baseUsername = user.name?.split(" ")[0]?.toLowerCase() || user?.email?.split("@")[0];
+                    let uniqueUsername;
+                    let isUnique = false;
+                    while (!isUnique) {
+                        const randomNum = Math.floor(1000 + Math.random() * 9000); // 4 digits
+                        uniqueUsername = `${baseUsername}${randomNum}`;
+                        const existing = await User.findOne({ username: uniqueUsername });
+                        if (!existing) isUnique = true;
+                    }
+                    await User.create({
+                        name: user.name,
+                        username: uniqueUsername,
+                        email: user.email,
+                        isVerify: true,
+                        image: user.image,
+                        isAcceptingMessages: true,
+                    });
+                }
+            }
+            return true;
+        },
         async jwt({ token, user, trigger, session }) {
             if (user) {
-                token._id = user._id?.toString();
-                token.username = user.username;
-                token.email = user.email;
-                token.isVerify = user.isVerify;
-                token.isAcceptingMessages = user.isAcceptingMessages;
-                token.image = user.image;
+                token.user = user;
             }
-            if (trigger === "update" && session) {
-                token.username = session.user.username ?? token.username;
-                token.name = session.user.name ?? token.name;
-                token.image = session.user.image ?? token.image;
-                token.isAcceptingMessages = session.user.isAcceptingMessages ?? token.isAcceptingMessages;
+            if (trigger === "update" && session?.user) {
+                token.user = {
+                    ...(token.user ?? {}),
+                    ...session.user,
+                };
             }
             // In session: { strategy: "jwt" } mode, there’s no database session store.
             // So the session object you get on the frontend is derived entirely from your JWT token via your session() callback.
@@ -82,13 +119,8 @@ export const options: NextAuthOptions = {
             return token;
         },
         async session({ session, token }) {
-            if (token) {
-                session.user._id = token._id as string;
-                session.user.username = token.username as string;
-                session.user.email = token.email as string;
-                session.user.isVerify = token.isVerify as boolean;
-                session.user.isAcceptingMessages = token.isAcceptingMessages as boolean;
-                session.user.image = token.image as string | undefined;
+            if (token && token.user) {
+                session.user = token.user as import("next-auth").User;
             }
             return session;
         }
@@ -101,4 +133,6 @@ export const options: NextAuthOptions = {
         maxAge: 7 * 24 * 60 * 60, // default it last for 30 days
     },
     secret: process.env.NEXTAUTH_SECRET,
+    
 }
+
