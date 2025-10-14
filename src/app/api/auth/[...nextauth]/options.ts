@@ -82,7 +82,7 @@ export const options: NextAuthOptions = {
                 await dbConnection();
                 const existingUser = await User.findOne({ email: user.email });
                 if (!existingUser) {
-                    let baseUsername = user.name?.split(" ")[0]?.toLowerCase() || user?.email?.split("@")[0];
+                    const baseUsername = user.name?.split(" ")[0]?.toLowerCase() || user?.email?.split("@")[0];
                     let uniqueUsername;
                     let isUnique = false;
                     while (!isUnique) {
