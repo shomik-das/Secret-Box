@@ -1,7 +1,8 @@
 # Secret Box
 The **Secret Box** is a privacy-first platform where users can receive anonymous messages through a unique link. Senders don’t need to log in, ensuring complete anonymity. Users can personalize their message page, manage who can send messages, and get email notifications for new messages — all while maintaining full control over their privacy.
 
-![Screenshot 1](Photos/full_pic.png)
+![Screenshot 1](Secret_Box_Pictures/full.png)
+![Screenshot 1](Secret_Box_Pictures/send_messages_page.png)
 
 ## Features
 - **Anonymous Messaging Without Signup** – Anyone can send secret or anonymous messages to a user without needing to create an account.  
