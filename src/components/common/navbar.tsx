@@ -113,7 +113,7 @@ export default function Navbar() {
           </div>
 
           {/* User / Login */}
-            { !user ? (
+            { status !== "loading"?  (!user ? (
                 <Button asChild><Link href="/auth/signin-signup">Sign In</Link></Button>
             ) : (
               <>
@@ -121,7 +121,7 @@ export default function Navbar() {
                 <UserMenu user={user}/>
               </div>
               </>
-            ) }
+            )) : (<></>)}
         </div>
       </div>
     </header>

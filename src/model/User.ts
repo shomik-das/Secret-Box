@@ -18,6 +18,8 @@ export interface User extends Document {
     image: string;
     headline?: string;
     question?: string;
+    googleId?: string;
+    githubId?: string;
     messages: mongoose.Types.ObjectId[];
     createdAt: Date;
 }
@@ -44,15 +46,15 @@ const userSchema: Schema<User> = new Schema({
     },
     password: {
         type: String,
-        required: [true, 'Password is required'],
+        required: false,
     },
     verifyCode: {
         type: String,
-        required: [true, 'Verify code is required'],
+        required: false,
     },
     verifyCodeExpiry: {
         type: Date,
-        required: [true, 'Verify code expiry is required'],
+        required: false,
     },
     isVerify: {
         type: Boolean,
@@ -86,6 +88,14 @@ const userSchema: Schema<User> = new Schema({
     question: {
         type: String,
         trim: true,
+    },
+    googleId: {
+        type: String, 
+        default: null 
+    },
+    githubId: { 
+        type: String,
+        default: null 
     },
     messages: [{
         type: mongoose.Schema.Types.ObjectId,

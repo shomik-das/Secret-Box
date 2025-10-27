@@ -30,6 +30,9 @@ export const options: NextAuthOptions = {
                 if(!user){
                     throw new Error("No user found with the given username or email");
                 }
+                if (!user.password) {
+                    throw new Error("You signed up with Google/GitHub. Please log in using that method or set a password first.");
+                }
                 if(!user.isVerify){
                     throw new Error("User is not verified. Please sign up first");
                 }
@@ -78,30 +81,57 @@ export const options: NextAuthOptions = {
 
     callbacks: {
         async signIn({ user, account }) {
-            if (account?.provider !== "credentials") {
+            try{
                 await dbConnection();
-                const existingUser = await User.findOne({ email: user.email });
-                if (!existingUser) {
-                    const baseUsername = user.name?.split(" ")[0]?.toLowerCase() || user?.email?.split("@")[0];
+                if (account && account.provider !== "credentials") {
+                    const existingUser = await User.findOne({ email: user.email });
+                    if (existingUser) {
+                        if (account.provider === "google" && !existingUser.googleId) {
+                            existingUser.googleId = account.providerAccountId;
+                            await existingUser.save();
+                        }
+                        else if (account.provider === "github" && !existingUser.githubId) {
+                            existingUser.githubId = account.providerAccountId;
+                            await existingUser.save();
+                        }
+                        user._id = existingUser._id.toString();
+                        user.username = existingUser.username;
+                        user.isVerify = existingUser.isVerify;
+                        user.isAcceptingMessages = existingUser.isAcceptingMessages;
+                        user.image = existingUser.image;
+                        return true;
+                    }
+                    const baseUsername = user.name?.split(" ")[0]?.toLowerCase() || user.email?.split("@")[0];
                     let uniqueUsername;
                     let isUnique = false;
                     while (!isUnique) {
-                        const randomNum = Math.floor(1000 + Math.random() * 9000); // 4 digits
+                        const randomNum = Math.floor(1000 + Math.random() * 9000);
                         uniqueUsername = `${baseUsername}${randomNum}`;
                         const existing = await User.findOne({ username: uniqueUsername });
                         if (!existing) isUnique = true;
                     }
-                    await User.create({
+                    const newUser = await User.create({
                         name: user.name,
                         username: uniqueUsername,
                         email: user.email,
                         isVerify: true,
                         image: user.image,
-                        isAcceptingMessages: true,
+                        googleId: account.provider === "google" ? account.providerAccountId : null,
+                        githubId: account.provider === "github" ? account.providerAccountId : null,
                     });
+                    user._id = newUser._id.toString();
+                    user.username = newUser.username;
+                    user.isVerify = newUser.isVerify;
+                    user.isAcceptingMessages = newUser.isAcceptingMessages;
+                    user.image = newUser.image;
+                    return true;
                 }
+                return true;
             }
-            return true;
+            catch(err){
+                console.error("Error: ", err);
+                return false;
+            }
         },
         async jwt({ token, user, trigger, session }) {
             if (user) {
@@ -126,7 +156,7 @@ export const options: NextAuthOptions = {
         }
     },
     pages:{
-        signIn: '/auth',
+        signIn: '/auth/signin-signup',
     },
     session: {
         strategy: 'jwt',
