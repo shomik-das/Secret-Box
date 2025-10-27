@@ -6,6 +6,7 @@ import { MessageHeader } from "@/components/dashboard/message-header"
 import { toast } from "sonner"
 import { ClientMessage as Message } from "@/types/ClientMessage"
 import { Suspense } from "react"
+import MessagesTableSkeleton from "@/components/dashboard/skeletons/massagesTableSkeleton"
 
 const Page = () => {
   const [messages, setMessages] = useState<Message[]>([])
@@ -51,7 +52,7 @@ const Page = () => {
       />
 
       <div className="min-h-[calc(100vh-4rem)] px-2 sm:px-4 lg:px-6 py-4 sm:py-4 lg:py-6">
-        <Suspense fallback={<div>Shomikkkkkk...</div>}>
+        <Suspense fallback={ <MessagesTableSkeleton /> }>
         <MessagesTable
           messages={messages}
           setMessages={setMessages}

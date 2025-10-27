@@ -29,6 +29,7 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog"
 import { ClientMessage as Message } from "@/types/ClientMessage"
+import MessagesTableSkeleton from "./skeletons/massagesTableSkeleton"
 
 
 type MessagesTableProps = {
@@ -153,8 +154,9 @@ const  MessagesTable =({messages, setMessages, isLoading, searchQuery} : Message
         }
     }
   }
-
-
+  if(isLoading){
+    return ( <MessagesTableSkeleton />)
+  }
   return (
     <div className="space-y-4">
       <div className="flex flex-col items-stretch gap-2 md:flex-row md:items-center md:justify-between">
@@ -166,7 +168,6 @@ const  MessagesTable =({messages, setMessages, isLoading, searchQuery} : Message
           </TabsList>
         </Tabs>
       </div>
-
       <div className={cn("rounded-md border")}>
         <Table>
           <TableHeader>
@@ -178,28 +179,7 @@ const  MessagesTable =({messages, setMessages, isLoading, searchQuery} : Message
             </TableRow>
           </TableHeader>
           <TableBody>
-            {isLoading ? (
-              Array.from({ length: 5 }).map((_, i) => (
-              <TableRow key={i}>
-                <TableCell className="w-[90px]">
-                  <Skeleton className="h-5 w-16 mx-auto" />
-                </TableCell>
-                <TableCell className="flex-1">
-                  <Skeleton className="h-5 w-full" />
-                </TableCell>
-                <TableCell className="hidden w-[180px] md:table-cell">
-                  <Skeleton className="h-5 w-32" />
-                </TableCell>
-                <TableCell className="w-[120px]">
-                  <div className="flex items-center justify-end gap-2">
-                    <Skeleton className="h-8 w-8 rounded-md" />
-                    <Skeleton className="h-8 w-8 rounded-md" />
-                  </div>
-                </TableCell>
-              </TableRow>
-              ))
-            ):
-            filtered && filtered.length > 0 ? (filtered.map((m: Message) => (
+            {filtered && filtered.length > 0 ? (filtered.map((m: Message) => (
               <TableRow
                 key={m._id}
                 role="button"
