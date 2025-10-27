@@ -1,36 +1,38 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Secret Box
+The **Secret Box** is a privacy-first platform where users can receive anonymous messages through a unique link. Senders don’t need to log in, ensuring complete anonymity. Users can personalize their message page, manage who can send messages, and get email notifications for new messages — all while maintaining full control over their privacy.
 
-## Getting Started
+![Screenshot 1](Secret_Box_Pictures/full.png)
+![Screenshot 1](Secret_Box_Pictures/send_messages_page.png)
 
-First, run the development server:
+## Features
+- **Anonymous Messaging Without Signup** – Anyone can send secret or anonymous messages to a user without needing to create an account.  
+- **Unique Message Link** – Each user receives a unique, shareable link through which others can send them anonymous messages.  
+- **OTP-Based Secure Login** – Ensures strong account security with one-time password verification during login and signup.  
+- **Password Reset via Email** – Users can securely reset their password through email verification when needed.  
+- **View, Manage, and Delete Messages** – Logged-in users can easily view all received messages, delete unwanted ones, and manage their inbox efficiently.  
+- **Allow or Block Message Senders** – Provides control over message sources by allowing or blocking senders.  
+- **Edit and Delete User Profile** – Users can update their personal details or delete their account anytime for full privacy control.  
+- **Personalized Message Page** – Users can customize their public message page with a profile image, questions, or an about section.  
+- **Email Alerts for New Messages** – Sends instant email notifications whenever a new message is received.  
+- **Modern UI with Shadcn/UI** – A beautifully designed, responsive interface built with modern Shadcn/UI components.  
+- **Login with Google and GitHub** – Offers convenient one-click authentication through Google or GitHub accounts for faster access.  
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Tech Stack
+- **Frontend & Backend:** Next.js with TypeScript  
+- **UI & Styling:** Shadcn/UI + Tailwind CSS  
+- **Authentication:** NextAuth.js with OTP verification and social login (Google & GitHub)  
+- **Form Validation:** Zod for schema-based validation  
+- **Database:** MongoDB with Mongoose  
+- **Email Notifications:** Resend for sending OTPs and alerts
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Installation & Setup
+   ```sh
+   git clone https://github.com/shomik-das/Secret-Box.git
+   cd secret-box
+   npm install
+   npm run dev
+   ```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Contributing
+Feel free to submit issues or pull requests to improve the project. Contributions are welcome!
