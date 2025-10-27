@@ -6,13 +6,14 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Switch } from "@/components/ui/switch"
 import { Label } from "@/components/ui/label"
 import SenderControlSkeleton from "@/components/dashboard/skeletons/senderControlSkeleton"
+import DeleteAccount from "@/components/dashboard/deleteAccount"
 
 const SenderControl = () => {
   const [isLoading, setIsLoading] = useState(true) 
   const [isSwitchLoading, setIsSwitchLoading] = useState(false) 
   const [acceptMessages, setAcceptMessages] = useState(true)
 
-  const fetchAcceptMessages = useCallback(async () => {
+  const fetchAcceptMessages = async () => {
     try {
       setIsLoading(true)
       const res = await fetch("/api/accept-messages", {
@@ -31,7 +32,7 @@ const SenderControl = () => {
     } finally {
       setIsLoading(false)
     }
-  }, [])
+  }
 
   const handleAcceptMessageChange = async (checked: boolean) => {
     try {
@@ -57,13 +58,14 @@ const SenderControl = () => {
 
   useEffect(() => {
     fetchAcceptMessages()
-  }, [fetchAcceptMessages])
+  }, [])
 
   if (isLoading) {
     return <SenderControlSkeleton />
   }
 
   return (
+    <>
     <Card>
       <CardHeader>
         <CardTitle>Privacy & sender controls</CardTitle>
@@ -88,6 +90,7 @@ const SenderControl = () => {
         </div>
       </CardContent>
     </Card>
+    </>
   )
 }
 
