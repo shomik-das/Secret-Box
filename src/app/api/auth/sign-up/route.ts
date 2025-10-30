@@ -3,11 +3,27 @@ import User from "@/model/User";
 import bcrypt from "bcryptjs";
 import sendEmail from "@/helper/sendOtpEmail";
 import { NextResponse } from "next/server";
+import { signUpSchema } from "@/schema/signUpSchema";
 
 export const POST = async (request: Request) => {
     try{
         await dbConnection(); //must do await here
         const {username, email, password} = await request.json();
+        const result = signUpSchema.safeParse({username, email, password});
+        if(!result.success){
+            const errors = result.error.format();
+            const usernameError = errors.username?._errors.join(", ");
+            const emailError = errors.email?._errors.join(", ");
+            const passwordError = errors.password?._errors.join(", ");
+
+            const errorMessages = [usernameError, emailError, passwordError]
+                .filter(Boolean)
+                .join(" | ");
+            return NextResponse.json({
+                success: false,
+                message: errorMessages || "Invalid input data",
+            }, {status: 400} );
+        }
         //Check if user with same username already exists
         const existingUsername = await User.findOne({username});
         if(existingUsername && existingUsername.isVerify){

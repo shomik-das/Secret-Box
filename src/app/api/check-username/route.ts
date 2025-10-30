@@ -21,7 +21,8 @@ export async function GET(request: Request) {
         }
         const result = usernameSchema.safeParse({username: username});
         if(!result.success){
-            const usernameError = result.error.format().username?._errors || [];
+            const usernameErrorArray = result.error.format().username?._errors || [];
+            const usernameError = usernameErrorArray.join(", ") || "Invalid username";
             return new NextResponse(JSON.stringify({
                 success: false,
                 message: usernameError

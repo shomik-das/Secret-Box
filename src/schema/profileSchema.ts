@@ -11,5 +11,5 @@ export const profileSchema = z.object({
     email: z.string().email({message: "Invalid email address"}),
     headline: z.string().optional(),
     question: z.string().optional(),
-    image: z.string().optional(),
+    image: z.string().url("Invalid image URL").optional(),
 });
