@@ -54,12 +54,17 @@ export async function GET(request: Request) {
             }), {status: 401});
         }
         const cachedUser = await redis.get<string>(`user:${user.username}`);
-        if(cachedUser){
-            const parsedUser = JSON.parse(cachedUser);
-            return new Response(JSON.stringify({
-                success: true,
-                isAcceptingMessages: parsedUser.isAcceptingMessages
-            }), {status: 200});
+        if (cachedUser) {
+            try {
+                const parsedUser = JSON.parse(cachedUser);
+                return new Response(JSON.stringify({
+                    success: true,
+                    isAcceptingMessages: parsedUser.isAcceptingMessages,
+                }),{ status: 200 });
+            } catch (err) {
+                console.error("Invalid cached user JSON, clearing cache:", err);
+                await redis.del(`user:${user.username}`);
+            }
         }
         const userId = user._id;
         if(typeof cachedUser  === "string"){

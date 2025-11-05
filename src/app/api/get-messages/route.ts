@@ -36,12 +36,19 @@ export async function GET(request: Request) {
         }
         //check cache
         const cachedMessages = await redis.get<string>(`messages:${user.username}`);
-        if(cachedMessages){
-            return new Response(JSON.stringify({
-                success: true,
-                message: "Messages fetched successfully",
-                data: JSON.parse(cachedMessages)
-            }), {status: 200});
+        if (cachedMessages) {
+            try {
+                const parsedMessages = JSON.parse(cachedMessages);
+                return new Response(
+                JSON.stringify({
+                    success: true,
+                    message: "Messages fetched successfully",
+                    data: parsedMessages,
+                }),{ status: 200 });
+            } catch (err) {
+                console.error("Corrupted cache for", user.username, err);
+                await redis.del(`messages:${user.username}`);
+            }
         }
         const userId = new mongoose.Types.ObjectId(user._id); //todo: why
         const userDB = await User.aggregate([  //todo: why aggregate need to study

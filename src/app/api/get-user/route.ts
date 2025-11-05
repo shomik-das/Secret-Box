@@ -15,13 +15,18 @@ export const GET = async (request: Request) => {
             }, {status: 400});
         }
         const cachedUser = await redis.get<string>(`user:${username}`);
-        if(cachedUser){
-            return NextResponse.json({
-                success: true,
-                user: JSON.parse(cachedUser)
-            }, {status: 200});
+        if (cachedUser) {
+            try {
+                const parsedUser = JSON.parse(cachedUser);
+                return NextResponse.json({
+                    success: true,
+                    user: parsedUser,
+            },{ status: 200 });
+            } catch (err) {
+                console.error("Invalid cached user JSON, clearing cache:", err);
+                await redis.del(`user:${username}`);
+            }
         }
-        
         const user = await User.findOne({username});
         if(!user){
             return NextResponse.json({
