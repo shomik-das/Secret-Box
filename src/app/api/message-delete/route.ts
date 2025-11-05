@@ -1,10 +1,10 @@
-
 import dbConnection from "@/lib/dbConnection";
 import User from "@/model/User";
 import Message from "@/model/Message";
 import { NextResponse } from "next/server";
 import { options } from "../auth/[...nextauth]/options";
 import { getServerSession } from "next-auth";
+import redis from "@/lib/redis";
 
 export const DELETE = async (request: Request) => {
     try{
@@ -34,6 +34,8 @@ export const DELETE = async (request: Request) => {
                 message: "Message or User not found"
             }, {status: 404});
         }
+        //invalidate cache
+        await redis.del(`messages:${user.username}`);
         return NextResponse.json({
             success: true,
             message: "Message deleted successfully"

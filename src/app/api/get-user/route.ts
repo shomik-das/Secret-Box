@@ -1,6 +1,7 @@
 import dbConnection from "@/lib/dbConnection";
 import { NextResponse } from "next/server";
 import User from "@/model/User";
+import redis from "@/lib/redis";
 
 export const GET = async (request: Request) => {
     try{
@@ -13,6 +14,14 @@ export const GET = async (request: Request) => {
                 message: "Username is required"
             }, {status: 400});
         }
+        const cachedUser = await redis.get<string>(`user:${username}`);
+        if(cachedUser){
+            return NextResponse.json({
+                success: true,
+                user: JSON.parse(cachedUser)
+            }, {status: 200});
+        }
+        
         const user = await User.findOne({username});
         if(!user){
             return NextResponse.json({
@@ -20,6 +29,7 @@ export const GET = async (request: Request) => {
                 message: "User does not exist"
             }, {status: 404});
         }
+        await redis.set(`user:${username}`, JSON.stringify(user), {ex: 60*60*24} );
         return NextResponse.json({
             success: true,
             user

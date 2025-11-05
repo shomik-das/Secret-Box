@@ -5,6 +5,7 @@ import User  from "@/model/User";
 import bcrypt from "bcryptjs";
 import GoogleProvider from "next-auth/providers/google";
 import GitHubProvider from "next-auth/providers/github";
+import { rateLimit } from "@/lib/rateLimit";
 
 export const options: NextAuthOptions = {
     providers: [
@@ -14,10 +15,15 @@ export const options: NextAuthOptions = {
                 identifier: { label: "identifier", type: "text", placeholder: "Username or Email" },
                 password: { label: "Password", type: "password", placeholder: "Password" }
             },
-            async authorize(credentials): Promise<NextAuthUser | null>{
+            async authorize(credentials, req): Promise<NextAuthUser | null>{
                 if(!credentials?.identifier || !credentials?.password){
                     throw new Error("Please enter all the fields");
                     
+                }
+                const ip = req?.headers?.["x-forwarded-for"] || "unknown";
+                const limitResult = await rateLimit(ip, 5, 60); // 5 attempts per minute
+                if (!limitResult.success) {
+                    throw new Error(limitResult.message);
                 }
                 const {identifier, password} = credentials;
                 await dbConnection();

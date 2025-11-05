@@ -2,6 +2,7 @@ import { getServerSession } from "next-auth";
 import { options } from "../auth/[...nextauth]/options";
 import dbConnection from "@/lib/dbConnection";
 import User from "@/model/User";
+import redis from "@/lib/redis";
 
 
 export async function POST(request: Request) {
@@ -25,6 +26,7 @@ export async function POST(request: Request) {
                 message: "User does not exist"
             }), {status: 404});
         }
+        await redis.set(`user:${user.username}`, JSON.stringify(updatedUser), {ex: 60*60*24} );
         return new Response(JSON.stringify({
             success: true,
             message: `You have ${acceptMessages ? "enabled" : "disabled"} accepting messages`,
@@ -51,7 +53,22 @@ export async function GET(request: Request) {
                 message: "User not authenticated"
             }), {status: 401});
         }
+        const cachedUser = await redis.get<string>(`user:${user.username}`);
+        if(cachedUser){
+            const parsedUser = JSON.parse(cachedUser);
+            return new Response(JSON.stringify({
+                success: true,
+                isAcceptingMessages: parsedUser.isAcceptingMessages
+            }), {status: 200});
+        }
         const userId = user._id;
+        if(typeof cachedUser  === "string"){
+            const parsedUser = JSON.parse(cachedUser);
+            return new Response(JSON.stringify({
+                success: true,
+                isAcceptingMessages: parsedUser.isAcceptingMessages
+            }), {status: 200});
+        }
         const existingUser = await User.findById(userId);
         if(!existingUser){
             return new Response(JSON.stringify({ 
@@ -59,6 +76,7 @@ export async function GET(request: Request) {
                 message: "User does not exist"
             }), {status: 404});
         }
+        await redis.set(`user:${user.username}`, JSON.stringify(existingUser), {ex: 60*60*24} );
         return new Response(JSON.stringify({
             success: true,
             isAcceptingMessages: existingUser.isAcceptingMessages

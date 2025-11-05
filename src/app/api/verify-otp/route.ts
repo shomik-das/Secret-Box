@@ -1,6 +1,7 @@
 import dbConnection from "@/lib/dbConnection";
 import User from "@/model/User";
 import {z} from "zod";
+import { rateLimit } from "@/lib/rateLimit";
 
 import { verifySchema } from "@/schema/verifySchema";
 const verifyCodeSchema = z.object({
@@ -9,7 +10,17 @@ const verifyCodeSchema = z.object({
 
 export async function POST(request: Request) {
     try{
+        
         await dbConnection();
+        const ip = request.headers.get("x-forwarded-for") || "anonymous";
+        const limitResult = await rateLimit(ip, 5, 60);
+        if (!limitResult.success) {
+            return new Response(
+                JSON.stringify({
+                success: false,
+                message: limitResult.message,
+            }),{ status: 429 });
+        }
         const {username, code} = await request.json();
         if(!username || !code){
             return new Response(JSON.stringify({

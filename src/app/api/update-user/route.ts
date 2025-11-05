@@ -4,6 +4,7 @@ import User from "@/model/User";
 import { getServerSession } from "next-auth";
 import { options } from "../auth/[...nextauth]/options";
 import { profileSchema } from "@/schema/profileSchema";
+import redis from "@/lib/redis";
 
 
 
@@ -41,7 +42,6 @@ export const POST = async (req: Request) => {
                 message: errors || "Invalid profile data",
             }, {status: 400})
         }
-        console.log("this is the id: ", id);
         if(!id || id !== user._id){
             return NextResponse.json({
                 success: false,
@@ -64,6 +64,7 @@ export const POST = async (req: Request) => {
             question,
             image
         }, {new: true})
+        await redis.set(`user:${username}`, JSON.stringify(updatedUser), { ex: 60 * 60 * 24});
         return NextResponse.json({
             success: true,
             message: "User details updated successfully",

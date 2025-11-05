@@ -2,6 +2,7 @@ import dbConnection from "@/lib/dbConnection";
 import User from "@/model/User";
 import Message from "@/model/Message";
 import mongoose from "mongoose";
+import redis from "@/lib/redis";
 
 
 export async function POST(request: Request) {
@@ -27,6 +28,8 @@ export async function POST(request: Request) {
         })
         user.messages.push(newMessage._id as mongoose.Types.ObjectId); // getting error here
         await user.save();
+        //invalidate cache
+        await redis.del(`messages:${user.username}`);
         return new Response(JSON.stringify({
             success: true,
             message: "Message sent successfully"
