@@ -23,7 +23,6 @@ const Page = () => {
 
       if (!data.success) {
         toast.error(data.message || "Failed to fetch messages")
-        setMessages([])
         return
       }
 

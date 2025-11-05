@@ -16,7 +16,6 @@ export interface IMessage {
 
 export async function GET(request: Request) {
     try{
-        await dbConnection();
         const ip = request.headers.get("x-forwarded-for") || "anonymous";
         const limitResult = await rateLimit(ip, 5, 60);
         if (!limitResult.success) {
@@ -50,6 +49,7 @@ export async function GET(request: Request) {
                 await redis.del(`messages:${user.username}`);
             }
         }
+        await dbConnection();
         const userId = new mongoose.Types.ObjectId(user._id); //todo: why
         const userDB = await User.aggregate([  //todo: why aggregate need to study
             {

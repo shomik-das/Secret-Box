@@ -7,7 +7,6 @@ import redis from "@/lib/redis";
 
 export async function POST(request: Request) {
     try{
-        await dbConnection();
         const session = await getServerSession(options); //todo: why we need to do this?
         const user = session?.user;
         if(!session || !user){
@@ -18,7 +17,7 @@ export async function POST(request: Request) {
         }
         const userId = user._id;
         const {acceptMessages} = await request.json();
-
+        await dbConnection();
         const updatedUser = await User.findByIdAndUpdate(userId, {isAcceptingMessages: acceptMessages}, {new: true});
         if(!updatedUser){
             return new Response(JSON.stringify({
@@ -44,7 +43,6 @@ export async function POST(request: Request) {
 
 export async function GET(request: Request) {
     try{
-        await dbConnection();
         const session = await getServerSession(options);
         const user = session?.user;
         if(!session || !user){
@@ -66,14 +64,8 @@ export async function GET(request: Request) {
                 await redis.del(`user:${user.username}`);
             }
         }
+        await dbConnection();
         const userId = user._id;
-        if(typeof cachedUser  === "string"){
-            const parsedUser = JSON.parse(cachedUser);
-            return new Response(JSON.stringify({
-                success: true,
-                isAcceptingMessages: parsedUser.isAcceptingMessages
-            }), {status: 200});
-        }
         const existingUser = await User.findById(userId);
         if(!existingUser){
             return new Response(JSON.stringify({ 

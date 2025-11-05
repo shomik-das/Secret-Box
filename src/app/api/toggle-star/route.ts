@@ -8,7 +8,6 @@ import redis from "@/lib/redis";
 
 export const POST= async (request: Request) => {
     try{
-        await dbConnection();
         const {id} = await request.json();
         if(!id){
             return NextResponse.json({
@@ -24,6 +23,7 @@ export const POST= async (request: Request) => {
                 message: "User not authenticated"
             }, {status: 401});
         }
+        await dbConnection();
         const message = await Message.findById(id);
         if(!message){
             return NextResponse.json({

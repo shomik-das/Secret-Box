@@ -10,7 +10,6 @@ import redis from "@/lib/redis";
 
 export const POST = async (req: Request) => {
     try{
-        await dbConnection();
         const session = await getServerSession(options);
         const user = session?.user;
         if(!session || !user){
@@ -48,6 +47,7 @@ export const POST = async (req: Request) => {
                 message: "User is not authorized"
             }, {status: 401})
         }
+        await dbConnection();
         const usernameOwner = await User.findOne({username});
         if(usernameOwner && user.username !== usernameOwner.username){
             if(usernameOwner.isVerify){

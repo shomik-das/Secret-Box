@@ -10,7 +10,6 @@ const usernameSchema = z.object({
 
 export async function GET(request: Request) {
     try{
-        await dbConnection();
         const { searchParams } = new URL(request.url);
         const username = searchParams.get("username");
         if(!username){
@@ -28,6 +27,7 @@ export async function GET(request: Request) {
                 message: usernameError
             }), {status: 400});
         }
+        await dbConnection();
         const user = await User.findOne({username, isVerify: true});
         if(user && user.isVerify){
             return new NextResponse(JSON.stringify({

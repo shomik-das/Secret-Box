@@ -10,8 +10,6 @@ const verifyCodeSchema = z.object({
 
 export async function POST(request: Request) {
     try{
-        
-        await dbConnection();
         const ip = request.headers.get("x-forwarded-for") || "anonymous";
         const limitResult = await rateLimit(ip, 5, 60);
         if (!limitResult.success) {
@@ -36,6 +34,7 @@ export async function POST(request: Request) {
                 message: codeError
             }), {status: 400});
         }
+        await dbConnection();
         const user = await User.findOne({username})
         if(!user){
             return new Response(JSON.stringify({

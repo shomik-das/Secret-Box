@@ -5,7 +5,6 @@ import redis from "@/lib/redis";
 
 export const GET = async (request: Request) => {
     try{
-        await dbConnection();
         const { searchParams } = new URL(request.url);
         const username = searchParams.get("username");
         if(!username){
@@ -27,6 +26,7 @@ export const GET = async (request: Request) => {
                 await redis.del(`user:${username}`);
             }
         }
+        await dbConnection();
         const user = await User.findOne({username});
         if(!user){
             return NextResponse.json({

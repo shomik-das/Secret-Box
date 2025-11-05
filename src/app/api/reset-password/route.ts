@@ -6,9 +6,14 @@ import bcrypt from "bcryptjs";
 
 export const POST = async (request: Request) => {
     try{
-        await dbConnection();
         const {username, newPassword, token} = await request.json();
-
+        if(!username || !newPassword || !token){
+            return NextResponse.json({
+                success: false,
+                message: "Username, new password and token are required"
+            }, {status: 400});
+        }
+        await dbConnection();
         const user = await User.findOne({username});
         if(!user){
             return NextResponse.json({
