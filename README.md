@@ -20,7 +20,8 @@ The **Secret Box** is a privacy-first platform where users can receive anonymous
 ## Tech Stack
 - **Frontend & Backend:** Next.js with TypeScript  
 - **UI & Styling:** Shadcn/UI + Tailwind CSS  
-- **Authentication:** NextAuth.js with OTP verification and social login (Google & GitHub)  
+- **Authentication:** NextAuth.js with OTP verification and social login (Google & GitHub)
+- **Caching & Performance:** Redis (for rate limiting, session management, and faster data retrieval)
 - **Form Validation:** Zod for schema-based validation  
 - **Database:** MongoDB with Mongoose  
 - **Email Notifications:** Resend for sending OTPs and alerts
